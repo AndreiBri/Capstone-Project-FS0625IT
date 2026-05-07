@@ -18,13 +18,11 @@ public class VenueController {
 
     private final VenueService venueService;
 
-    @PreAuthorize("hasRole('OWNER')")
     @GetMapping
     public ResponseEntity<List<VenueResponseDTO>> getAll() {
         return ResponseEntity.ok(venueService.getAll());
     }
 
-    @PreAuthorize("hasRole('OWNER')")
     @GetMapping("/{slug}")
     public ResponseEntity<VenueResponseDTO> getBySlug(@PathVariable String slug) {
         return ResponseEntity.ok(venueService.getBySlug(slug));
