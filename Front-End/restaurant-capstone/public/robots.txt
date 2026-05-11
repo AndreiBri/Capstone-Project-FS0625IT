@@ -1,0 +1,11 @@
+# robots.txt per MonkeyFamilyWeb
+
+User-agent: *
+Disallow: /admin/events/
+Disallow: /admin/events/*
+
+# Pagine pubbliche indicizzabili
+Allow: /
+
+# Link alla sitemap
+Sitemap: https://monkeyfamilyweb.netlify.app/sitemap.xml
