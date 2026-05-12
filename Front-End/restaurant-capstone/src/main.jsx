@@ -7,6 +7,7 @@ import { store } from "./features/store/store.js";
 import App from "./App.jsx";
 import Home from "./pages/Home.jsx";
 import NotFound from "./pages/NotFound.jsx";
+import Venue from "./pages/Venue.jsx";
 
 const router = createBrowserRouter([
   {
@@ -14,6 +15,7 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       { index: true, element: <Home /> },
+      { path: "venue/:venueId", element: <Venue /> },
       { path: "*", element: <NotFound /> },
     ],
   },
