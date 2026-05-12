@@ -33,4 +33,12 @@ public class VenueController {
     public ResponseEntity<VenueResponseDTO> create(@Valid @RequestBody VenueRequestDTO dto) {
         return ResponseEntity.ok(venueService.create(dto));
     }
+
+    @PreAuthorize("hasRole('OWNER')")
+    @PatchMapping("/{slug}")
+    public ResponseEntity<VenueResponseDTO> update(
+            @PathVariable String slug,
+            @RequestBody VenueRequestDTO dto) {
+        return ResponseEntity.ok(venueService.update(slug, dto));
+    }
 }

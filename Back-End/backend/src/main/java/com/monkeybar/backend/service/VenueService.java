@@ -41,24 +41,42 @@ public class VenueService {
         Venue venue = new Venue();
         venue.setName(dto.getName());
         venue.setSlug(dto.getSlug());
-        venue.setDescription(dto.getDescription());
-        venue.setLocation(dto.getLocation());
-        venue.setMapEmbedUrl(dto.getMapEmbedUrl());
-        venue.setImages(dto.getImages());
-        venue.setActivities(dto.getActivities());
-        venue.setExtras(dto.getExtras());
-
-        if (dto.getHours() != null) {
-            venue.setHours(dto.getHours().stream().map(h ->
-                    new VenueHour(h.getDay(), h.getTime())
-            ).toList());
-        }
-
+        if (dto.getDescription() != null) venue.setDescription(dto.getDescription());
+        if (dto.getLocation() != null) venue.setLocation(dto.getLocation());
+        if (dto.getMapEmbedUrl() != null) venue.setMapEmbedUrl(dto.getMapEmbedUrl());
+        if (dto.getImages() != null) venue.setImages(dto.getImages());
+        if (dto.getActivities() != null) venue.setActivities(dto.getActivities());
+        if (dto.getExtras() != null) venue.setExtras(dto.getExtras());
+        if (dto.getHours() != null) venue.setHours(
+                dto.getHours().stream()
+                        .map(h -> new VenueHour(h.getDay(), h.getTime()))
+                        .collect(java.util.stream.Collectors.toList())
+        );
         return EntityMapper.toVenueResponse(venueRepository.save(venue));
     }
 
     public Venue getEntityBySlug(String slug) {
         return venueRepository.findBySlug(slug)
                 .orElseThrow(() -> new ResourceNotFoundException("Venue non trovata: " + slug));
+    }
+
+    public VenueResponseDTO update(String slug, VenueRequestDTO dto) {
+        Venue venue = venueRepository.findBySlug(slug)
+                .orElseThrow(() -> new ResourceNotFoundException("Venue non trovata: " + slug));
+
+        if (dto.getName() != null) venue.setName(dto.getName());
+        if (dto.getDescription() != null) venue.setDescription(dto.getDescription());
+        if (dto.getLocation() != null) venue.setLocation(dto.getLocation());
+        if (dto.getMapEmbedUrl() != null) venue.setMapEmbedUrl(dto.getMapEmbedUrl());
+        if (dto.getImages() != null) venue.setImages(dto.getImages());
+        if (dto.getHours() != null) venue.setHours(
+                dto.getHours().stream()
+                        .map(h -> new VenueHour(h.getDay(), h.getTime()))
+                        .collect(java.util.stream.Collectors.toList())
+        );
+        if (dto.getActivities() != null) venue.setActivities(dto.getActivities());
+        if (dto.getExtras() != null) venue.setExtras(dto.getExtras());
+
+        return EntityMapper.toVenueResponse(venueRepository.save(venue));
     }
 }

@@ -31,6 +31,8 @@ public class Venue {
     private String description;
 
     private String location;
+
+    @Column(columnDefinition = "TEXT")
     private String mapEmbedUrl;
 
     @ElementCollection

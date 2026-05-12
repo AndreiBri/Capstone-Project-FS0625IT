@@ -40,6 +40,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/menu/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/events/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/venues/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/bookings").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/venues/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/auth/register").hasRole("OWNER")

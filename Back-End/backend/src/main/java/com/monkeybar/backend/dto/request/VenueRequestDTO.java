@@ -7,6 +7,7 @@ import java.util.List;
 
 @Data
 public class VenueRequestDTO {
+
     @NotBlank
     private String name;
 
