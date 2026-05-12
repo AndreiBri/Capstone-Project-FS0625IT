@@ -1,15 +1,18 @@
+import { Outlet } from "react-router-dom";
 import "./App.css";
 import MyNavbar from "./components/MyNavbar";
 
 function App() {
   return (
     <>
-      <header className="min-h-screen bg-[#1a0526]">
-        <MyNavbar />
-      </header>
-      <section id="center">
-        <div className="hero"></div>
-      </section>
+      <div className="min-h-screen bg-[#1a0526]">
+        <header>
+          <MyNavbar />
+        </header>
+        <main className="flex-1 pt-20">
+          <Outlet />
+        </main>
+      </div>
     </>
   );
 }
