@@ -110,7 +110,7 @@ const Venue = () => {
                 to="/booking/form"
                 className="text-xs font-black tracking-widest uppercase px-6 py-3 rounded-full bg-[#A06CD5] text-white hover:bg-[#DABFFF] hover:text-[#320842] transition-all duration-200 shadow-lg shadow-[#A06CD5]/30"
               >
-                Prenota →
+                Prenota
               </NavLink>
               <NavLink
                 to={`/events/${venue.slug}`}
@@ -147,9 +147,9 @@ const Venue = () => {
 
         {/* Attività + Extra */}
         {(venue.activities?.length > 0 || venue.extras?.length > 0) && (
-          <section className="grid grid-cols-1 sm:grid-cols-2 gap-10">
+          <section className={`grid grid-cols-1 gap-10 ${venue.extras?.length > 0 ? "sm:grid-cols-2" : ""}`}>
             {venue.activities?.length > 0 && (
-              <div>
+              <div className={!venue.extras?.length ? "flex flex-col items-center text-center w-full" : ""}>
                 <p className="text-xs font-black tracking-[0.3em] text-[#A06CD5] uppercase mb-5">Attività</p>
                 <ul className="space-y-3">
                   {venue.activities.map((a, i) => (
@@ -188,7 +188,7 @@ const Venue = () => {
             to={`/menu/${venue.slug}`}
             className="inline-flex items-center gap-2 text-xs font-black tracking-widest uppercase px-8 py-3.5 rounded-full bg-[#A06CD5] text-white hover:bg-[#DABFFF] hover:text-[#320842] transition-all duration-200 shadow-lg shadow-[#A06CD5]/30"
           >
-            Vedi Menu →
+            Vedi Menu
           </NavLink>
         </section>
 
