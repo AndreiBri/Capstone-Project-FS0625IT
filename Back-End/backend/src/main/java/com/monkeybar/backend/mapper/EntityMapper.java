@@ -10,6 +10,22 @@ public class EntityMapper {
         dto.setId(v.getId());
         dto.setName(v.getName());
         dto.setSlug(v.getSlug());
+        dto.setDescription(v.getDescription());
+        dto.setLocation(v.getLocation());
+        dto.setMapEmbedUrl(v.getMapEmbedUrl());
+        dto.setImages(v.getImages());
+        dto.setActivities(v.getActivities());
+        dto.setExtras(v.getExtras());
+
+        if (v.getHours() != null) {
+            dto.setHours(v.getHours().stream().map(h -> {
+                VenueResponseDTO.VenueHourDTO hourDTO = new VenueResponseDTO.VenueHourDTO();
+                hourDTO.setDay(h.getDay());
+                hourDTO.setTime(h.getTime());
+                return hourDTO;
+            }).collect(java.util.stream.Collectors.toList()));
+        }
+
         return dto;
     }
 
