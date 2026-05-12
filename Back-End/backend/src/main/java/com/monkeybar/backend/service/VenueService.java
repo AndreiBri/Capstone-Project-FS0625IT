@@ -3,6 +3,7 @@ package com.monkeybar.backend.service;
 import com.monkeybar.backend.dto.request.VenueRequestDTO;
 import com.monkeybar.backend.dto.response.VenueResponseDTO;
 import com.monkeybar.backend.entity.Venue;
+import com.monkeybar.backend.entity.VenueHour;
 import com.monkeybar.backend.exception.ResourceNotFoundException;
 import com.monkeybar.backend.mapper.EntityMapper;
 import com.monkeybar.backend.repository.VenueRepository;
@@ -40,6 +41,19 @@ public class VenueService {
         Venue venue = new Venue();
         venue.setName(dto.getName());
         venue.setSlug(dto.getSlug());
+        venue.setDescription(dto.getDescription());
+        venue.setLocation(dto.getLocation());
+        venue.setMapEmbedUrl(dto.getMapEmbedUrl());
+        venue.setImages(dto.getImages());
+        venue.setActivities(dto.getActivities());
+        venue.setExtras(dto.getExtras());
+
+        if (dto.getHours() != null) {
+            venue.setHours(dto.getHours().stream().map(h ->
+                    new VenueHour(h.getDay(), h.getTime())
+            ).toList());
+        }
+
         return EntityMapper.toVenueResponse(venueRepository.save(venue));
     }
 
