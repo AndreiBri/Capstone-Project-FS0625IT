@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
@@ -17,7 +17,10 @@ public class EventRequestDTO {
     private String imageUrl;
 
     @NotNull
-    private LocalDate eventDate;
+    private LocalDateTime startTime;
+
+    @NotNull
+    private LocalDateTime endTime;
 
     @NotNull
     private UUID venueId;

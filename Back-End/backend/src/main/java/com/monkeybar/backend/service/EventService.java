@@ -49,7 +49,8 @@ public class EventService {
         Event event = new Event();
         event.setTitle(dto.getTitle());
         event.setDescription(dto.getDescription());
-        event.setEventDate(dto.getEventDate());
+        event.setStartTime(dto.getStartTime());
+        event.setEndTime(dto.getEndTime());
         event.setVenue(venue);
 
         return EntityMapper.toEventResponse(eventRepository.save(event));
