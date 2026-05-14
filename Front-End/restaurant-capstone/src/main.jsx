@@ -8,6 +8,7 @@ import App from "./App.jsx";
 import Home from "./pages/Home.jsx";
 import NotFound from "./pages/NotFound.jsx";
 import Venue from "./pages/Venue.jsx";
+import Menu from "./pages/Menu.jsx";
 
 const router = createBrowserRouter([
   {
@@ -16,6 +17,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Home /> },
       { path: "venue/:venueId", element: <Venue /> },
+      { path: "menu/:venueId", element: <Menu /> },
       { path: "*", element: <NotFound /> },
     ],
   },
