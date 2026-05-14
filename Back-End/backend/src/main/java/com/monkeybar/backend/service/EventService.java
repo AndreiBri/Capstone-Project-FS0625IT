@@ -28,6 +28,15 @@ public class EventService {
                 .toList();
     }
 
+    public List<EventResponseDTO> getByVenueSlug(String slug) {
+        Venue venue = venueService.getEntityBySlug(slug);
+
+        return eventRepository.findByVenueId(venue.getId())
+                .stream()
+                .map(entity -> EntityMapper.toEventResponse(entity))
+                .toList();
+    }
+
     public EventResponseDTO getById(UUID id) {
         Event event = eventRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Evento non trovato"));

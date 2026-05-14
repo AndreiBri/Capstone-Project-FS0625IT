@@ -7,7 +7,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.util.List;
@@ -19,11 +18,10 @@ import java.util.UUID;
 public class EventController {
 
     private final EventService eventService;
-    private final ObjectMapper objectMapper;
 
-    @GetMapping("/{venueId}")
-    public ResponseEntity<List<EventResponseDTO>> getByVenueId(@PathVariable UUID venueId) {
-        return ResponseEntity.ok(eventService.getByVenueId(venueId));
+    @GetMapping("/{slug}")
+    public ResponseEntity<List<EventResponseDTO>> getByVenueSlug(@PathVariable String slug) {
+        return ResponseEntity.ok(eventService.getByVenueSlug(slug));
     }
 
     @GetMapping("/item/{id}")
