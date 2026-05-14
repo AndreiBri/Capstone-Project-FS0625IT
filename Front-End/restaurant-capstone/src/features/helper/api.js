@@ -1,10 +1,14 @@
 const BASE_URL = import.meta.env.VITE_API_URL;
 
+// ------------- VENUE -----------------------
+
 export const fetchVenue = async (slug) => {
   const res = await fetch(`${BASE_URL}/api/venues/${slug}`);
   if (!res.ok) throw new Error("Venue non trovata");
   return res.json();
 };
+
+//  ------------ MENU ---------------------
 
 export const fetchPublicMenu = async (slug) => {
   const res = await fetch(`${BASE_URL}/api/menu/${slug}`);
@@ -33,8 +37,10 @@ export const toogleMenuItemsVisibility = async (id, token) => {
   return res.json();
 };
 
+// ------------ EVENTI ---------------------
+
 export const fetchEvents = async (slug) => {
-  const res = fetch(`${BASE_URL}/api/events/${slug}`);
+  const res = await fetch(`${BASE_URL}/api/events/${slug}`);
   if (!res.ok) throw new Error("Eventi non trovati");
   return res.json();
 };
