@@ -50,7 +50,8 @@ public class EntityMapper {
         dto.setTitle(e.getTitle());
         dto.setDescription(e.getDescription());
         dto.setImageUrl(e.getImageUrl());
-        dto.setEventDate(e.getEventDate().atStartOfDay());
+        dto.setStartTime(e.getStartTime());
+        dto.setEndTime(e.getEndTime());
         dto.setVenueId(e.getVenue().getId());
         dto.setVenueName(e.getVenue().getName());
         return dto;

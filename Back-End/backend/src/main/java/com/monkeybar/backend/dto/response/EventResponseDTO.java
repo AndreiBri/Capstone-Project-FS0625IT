@@ -11,7 +11,8 @@ public class EventResponseDTO {
     private String title;
     private String description;
     private String imageUrl;
-    private LocalDateTime eventDate;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
     private UUID venueId;
     private String venueName;
 }
