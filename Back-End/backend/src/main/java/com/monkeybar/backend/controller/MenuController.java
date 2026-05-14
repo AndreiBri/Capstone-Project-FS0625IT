@@ -19,13 +19,13 @@ public class MenuController {
     private final MenuService menuService;
 
     @GetMapping("/{venueId}")
-    public ResponseEntity<List<MenuItemResponseDTO>> getPublicMenu(@PathVariable UUID venueId) {
-        return ResponseEntity.ok(menuService.getPublicMenu(venueId));
+    public ResponseEntity<List<MenuItemResponseDTO>> getPublicMenu(@PathVariable String venueId) {
+        return ResponseEntity.ok(menuService.getPublicMenuBySlug(venueId));
     }
 
     @GetMapping("/{venueId}/all")
-    public ResponseEntity<List<MenuItemResponseDTO>> getFullMenu(@PathVariable UUID venueId) {
-        return ResponseEntity.ok(menuService.getFullMenu(venueId));
+    public ResponseEntity<List<MenuItemResponseDTO>> getFullMenu(@PathVariable String venueId) {
+        return ResponseEntity.ok(menuService.getFullMenuBySlug(venueId));
     }
 
     @GetMapping("/item/{id}")

@@ -20,15 +20,17 @@ public class MenuService {
     private final MenuItemRepository menuItemRepository;
     private final VenueService venueService;
 
-    public List<MenuItemResponseDTO> getPublicMenu(UUID venueId) {
-        return menuItemRepository.findByVenueIdAndVisibleTrue(venueId)
+    public List<MenuItemResponseDTO> getPublicMenuBySlug(String slug) {
+        Venue venue = venueService.getEntityBySlug(slug);
+        return menuItemRepository.findByVenueIdAndVisibleTrue(venue.getId())
                 .stream()
                 .map(EntityMapper::toMenuItemResponse)
                 .toList();
     }
 
-    public List<MenuItemResponseDTO> getFullMenu(UUID venueId) {
-        return menuItemRepository.findByVenueId(venueId)
+    public List<MenuItemResponseDTO> getFullMenuBySlug(String slug) {
+        Venue venue = venueService.getEntityBySlug(slug);
+        return menuItemRepository.findByVenueId(venue.getId())
                 .stream()
                 .map(EntityMapper::toMenuItemResponse)
                 .toList();
