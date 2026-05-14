@@ -32,3 +32,27 @@ export const toogleMenuItemsVisibility = async (id, token) => {
   if (!res.ok) throw new Error("Errore toogle visibilita");
   return res.json();
 };
+
+export const fetchEvents = async (slug) => {
+  const res = fetch(`${BASE_URL}/api/events/${slug}`);
+  if (!res.ok) throw new Error("Eventi non trovati");
+  return res.json();
+};
+
+export const deleteEvent = async (eventId, token) => {
+  try {
+    const res = await fetch(`${BASE_URL}/api/events/${eventId}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (!res.ok) throw new Error(`Errore: ${res.status}`);
+
+    console.log("Evento eliminato con successo");
+    return true;
+  } catch (err) {
+    console.error(`Failed to delete:`, err);
+    return false;
+  }
+};
