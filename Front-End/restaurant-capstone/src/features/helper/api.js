@@ -62,3 +62,34 @@ export const deleteEvent = async (eventId, token) => {
     return false;
   }
 };
+
+// ----------- AUTH ----------------------
+
+export const loginUser = async (email, password) => {
+  const res = await fetch(`${BASE_URL}/api/auth/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email, password }),
+  });
+
+  if (!res.ok) throw new Error("Credenziali non valide");
+
+  return res.json();
+};
+
+export const registerUser = async (email, password, role, venueSlug, token) => {
+  const res = await fetch(`${BASE_URL}/api/auth/register`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email, password, role, venueSlug }),
+  });
+
+  if (!res.ok) throw new Error("Registrazione fallita");
+
+  return res.json();
+};
