@@ -3,9 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { loginUser } from "../features/helper/api";
 import { useDispatch } from "react-redux";
 import { setToken, setProfile } from "../features/auth/authSlice";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/16/solid";
 
 const Login = () => {
   const [errorMsg, setErrorMsg] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -19,7 +21,9 @@ const Login = () => {
     try {
       const data = await loginUser(email, password);
       dispatch(setToken(data.token));
-      dispatch(setProfile({ profileId: data.profileId, email: data.email, role: data.role, venueId: data.venueId, venueName: data.venueName, alias: data.alias }));
+      dispatch(
+        setProfile({ profileId: data.profileId, email: data.email, role: data.role, venueId: data.venueId, venueName: data.venueName, alias: data.alias }),
+      );
       navigate("/");
     } catch (err) {
       setErrorMsg("Login fallito: controlla email o password");
@@ -41,13 +45,22 @@ const Login = () => {
           required
         />
 
-        <input
-          name="password"
-          type="password"
-          placeholder="Password"
-          className="w-full p-4 mb-6 rounded-lg bg-[#320842]/60 text-white border border-[#DABFFF]/30 focus:border-[#A06CD5] focus:outline-none"
-          required
-        />
+        <div className="relative mb-6">
+          <input
+            name="password"
+            type={showPassword ? "text" : "password"}
+            placeholder="Password"
+            className="w-full p-4 rounded-lg bg-[#320842]/60 text-white border border-[#DABFFF]/30 focus:border-[#A06CD5] focus:outline-none pr-12"
+            required
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-4 top-1/2 -translate-y-1/2 text-[#DABFFF]/50 hover:text-[#DABFFF]"
+          >
+            {showPassword ? <EyeSlashIcon className="h-5 w-5" /> : <EyeIcon className="h-5 w-5" />}
+          </button>
+        </div>
 
         <button
           type="submit"
