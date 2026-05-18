@@ -3,6 +3,7 @@ package com.monkeybar.backend.dto.response;
 import com.monkeybar.backend.enums.Role;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
@@ -12,4 +13,6 @@ public class ProfileResponseDTO {
     private Role role;
     private UUID venueId;
     private String venueName;
+    private String alias;
+    private LocalDateTime createdAt;
 }

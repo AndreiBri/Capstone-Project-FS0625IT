@@ -42,7 +42,8 @@ public class AuthService {
         profile.setPassword(passwordEncoder.encode(dto.getPassword()));
         profile.setRole(Role.SUPERVISOR);
         profile.setVenue(venue);
-        
+        profile.setAlias(dto.getAlias());
+
         profileRepository.save(profile);
         return buildAuthResponse(profile);
     }
@@ -75,6 +76,9 @@ public class AuthService {
             response.setVenueId(profile.getVenue().getId());
             response.setVenueName(profile.getVenue().getName());
         }
+        ;
+
+        response.setAlias(profile.getAlias());
 
         return response;
     }

@@ -21,4 +21,6 @@ public class RegisterRequestDTO {
     private Role role;
 
     private String venueSlug;
+
+    private String alias;
 }

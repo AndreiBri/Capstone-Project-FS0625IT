@@ -80,6 +80,9 @@ public class EntityMapper {
             dto.setVenueId(p.getVenue().getId());
             dto.setVenueName(p.getVenue().getName());
         }
+        ;
+        dto.setAlias(p.getAlias());
+        dto.setCreatedAt(p.getCreatedAt());
         return dto;
     }
 }
