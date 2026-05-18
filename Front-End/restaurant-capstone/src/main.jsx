@@ -13,6 +13,8 @@ import Eventi from "./pages/Eventi.jsx";
 import Login from "./pages/Login.jsx";
 
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import { PersistGate } from "redux-persist/integration/react";
+import { persistor } from "./features/store/store.js";
 
 const router = createBrowserRouter([
   {
@@ -31,6 +33,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   <Provider store={store}>
-    <RouterProvider router={router} />
+    <PersistGate loading={null} persistor={persistor}>
+      <RouterProvider router={router} />
+    </PersistGate>
   </Provider>,
 );
