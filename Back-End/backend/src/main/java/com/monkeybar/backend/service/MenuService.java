@@ -3,8 +3,10 @@ package com.monkeybar.backend.service;
 import com.monkeybar.backend.dto.request.MenuItemRequestDTO;
 import com.monkeybar.backend.dto.response.MenuItemResponseDTO;
 import com.monkeybar.backend.entity.MenuItem;
+import com.monkeybar.backend.entity.Profile;
 import com.monkeybar.backend.entity.Venue;
 import com.monkeybar.backend.exception.ResourceNotFoundException;
+import com.monkeybar.backend.exception.UnauthorizedException;
 import com.monkeybar.backend.mapper.EntityMapper;
 import com.monkeybar.backend.repository.MenuItemRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,7 @@ public class MenuService {
 
     private final MenuItemRepository menuItemRepository;
     private final VenueService venueService;
+    private final ProfileService profileService;
 
     public List<MenuItemResponseDTO> getPublicMenuBySlug(String slug) {
         Venue venue = venueService.getEntityBySlug(slug);
@@ -58,9 +61,16 @@ public class MenuService {
         return EntityMapper.toMenuItemResponse(menuItemRepository.save(item));
     }
 
-    public MenuItemResponseDTO toggleVisibility(UUID id) {
+    public MenuItemResponseDTO toggleVisibility(UUID id, String userEmail) {
         MenuItem item = menuItemRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Prodotto non trovato"));
+
+        Profile profile = profileService.getEntityByEmail(userEmail);
+
+        if (!item.getVenue().getId().equals(profile.getVenue().getId())) {
+            throw new UnauthorizedException("Non autorizzato a modificare questo locale");
+        }
+
         item.setVisible(!item.isVisible());
         return EntityMapper.toMenuItemResponse(menuItemRepository.save(item));
     }

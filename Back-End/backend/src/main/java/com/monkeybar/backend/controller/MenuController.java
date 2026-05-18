@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 
@@ -39,8 +40,8 @@ public class MenuController {
     }
 
     @PatchMapping("/{id}/visibility")
-    public ResponseEntity<MenuItemResponseDTO> toggleVisibility(@PathVariable UUID id) {
-        return ResponseEntity.ok(menuService.toggleVisibility(id));
+    public ResponseEntity<MenuItemResponseDTO> toggleVisibility(@PathVariable UUID id, Principal principal) {
+        return ResponseEntity.ok(menuService.toggleVisibility(id, principal.getName()));
     }
 
     @DeleteMapping("/{id}")

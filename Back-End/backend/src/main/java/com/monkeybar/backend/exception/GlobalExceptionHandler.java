@@ -34,6 +34,13 @@ public class GlobalExceptionHandler {
         return buildResponse(HttpStatus.NOT_FOUND, "Risorsa non trovata", null);
     }
 
+    // Errori di accesso non autorizzato - messaggio generico al frontend
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<Map<String, Object>> handleUnauthorized(UnauthorizedException ex) {
+        log.warn("Accesso negato: {}", ex.getMessage());
+        return buildResponse(HttpStatus.FORBIDDEN, "Non autorizzato", null);
+    }
+
     // Errori di business — messaggio generico, dettaglio solo nel log
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<Map<String, Object>> handleRuntime(RuntimeException ex) {
