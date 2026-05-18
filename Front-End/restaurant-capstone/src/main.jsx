@@ -10,6 +10,9 @@ import NotFound from "./pages/NotFound.jsx";
 import Venue from "./pages/Venue.jsx";
 import Menu from "./pages/Menu.jsx";
 import Eventi from "./pages/Eventi.jsx";
+import Login from "./pages/Login.jsx";
+
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +23,7 @@ const router = createBrowserRouter([
       { path: "venue/:venueId", element: <Venue /> },
       { path: "menu/:venueId", element: <Menu /> },
       { path: "events/:venueId", element: <Eventi /> },
+      { path: "login", element: <Login /> },
       { path: "*", element: <NotFound /> },
     ],
   },
