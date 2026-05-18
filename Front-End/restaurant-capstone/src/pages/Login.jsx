@@ -19,7 +19,7 @@ const Login = () => {
     try {
       const data = await loginUser(email, password);
       dispatch(setToken(data.token));
-      dispatch(setProfile({ profileId: data.profileId, email: data.email, role: data.role, venueId: data.venueId, venueName: data.venueName }));
+      dispatch(setProfile({ profileId: data.profileId, email: data.email, role: data.role, venueId: data.venueId, venueName: data.venueName, alias: data.alias }));
       navigate("/");
     } catch (err) {
       setErrorMsg("Login fallito: controlla email o password");
