@@ -63,6 +63,13 @@ export const deleteEvent = async (eventId, token) => {
   }
 };
 
+export const fetchEventById = async (id) => {
+  const res = await fetch(`${BASE_URL}/api/events/item/${id}`);
+  if (!res.ok) throw new Error("Evento non trovato");
+
+  return res.json();
+};
+
 // ----------- AUTH ----------------------
 
 export const loginUser = async (email, password) => {
@@ -90,6 +97,22 @@ export const registerUser = async (email, password, role, venueSlug, token) => {
   });
 
   if (!res.ok) throw new Error("Registrazione fallita");
+
+  return res.json();
+};
+
+// ----------- BOOKING ----------------------
+
+export const createBooking = async (customerName, customerEmail, customerPhone, bookingDate, guests, venueId) => {
+  const res = await fetch(`${BASE_URL}/api/bookings`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ customerName, customerEmail, customerPhone, bookingDate, guests, venueId }),
+  });
+
+  if (!res.ok) throw new Error("Prenotazione fallita");
 
   return res.json();
 };

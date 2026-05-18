@@ -11,8 +11,9 @@ import Venue from "./pages/Venue.jsx";
 import Menu from "./pages/Menu.jsx";
 import Eventi from "./pages/Eventi.jsx";
 import Login from "./pages/Login.jsx";
+import BookingForm from "./pages/BookingForm.jsx";
 
-import ProtectedRoute from "./components/ProtectedRoute.jsx";
+//import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistor } from "./features/store/store.js";
 
@@ -25,6 +26,7 @@ const router = createBrowserRouter([
       { path: "venue/:venueId", element: <Venue /> },
       { path: "menu/:venueId", element: <Menu /> },
       { path: "events/:venueId", element: <Eventi /> },
+      { path: "booking/form", element: <BookingForm /> },
       { path: "login", element: <Login /> },
       { path: "*", element: <NotFound /> },
     ],
