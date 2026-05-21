@@ -8,6 +8,12 @@ export const fetchVenue = async (slug) => {
   return res.json();
 };
 
+export const fetchAllVenues = async () => {
+  const res = await fetch(`${BASE_URL}/api/venues`);
+  if (!res.ok) throw new Error("Vuene non trovate");
+  return res.json();
+};
+
 //  ------------ MENU ---------------------
 
 export const fetchPublicMenu = async (slug) => {
@@ -58,7 +64,47 @@ export const deleteEvent = async (eventId, token) => {
     console.log("Evento eliminato con successo");
     return true;
   } catch (err) {
-    console.error(`Failed to delete:`, err);
+    console.error(`Fallita eliminazione:`, err);
+    return false;
+  }
+};
+
+export const updateEvent = async (eventId, token, eventData) => {
+  try {
+    const res = await fetch(`${BASE_URL}/api/events/${eventId}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(eventData),
+    });
+    if (!res.ok) throw new Error(`Errore: ${res.status}`);
+
+    console.log("Evento modificato con successo");
+    return true;
+  } catch (err) {
+    console.error(`Fallita modifica:`, err);
+    return false;
+  }
+};
+
+export const createEvent = async (token, eventData) => {
+  try {
+    const res = await fetch(`${BASE_URL}/api/events`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(eventData),
+    });
+    if (!res.ok) throw new Error(`Errore: ${res.status}`);
+
+    console.log("Evento creato con successo");
+    return true;
+  } catch (err) {
+    console.error(`Fallita creazione evento:`, err);
     return false;
   }
 };

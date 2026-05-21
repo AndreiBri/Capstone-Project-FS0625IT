@@ -61,9 +61,19 @@ const Eventi = () => {
   return (
     <div className="min-h-screen bg-[#1a0526] px-4 py-10">
       <div className="max-w-7xl mx-auto">
-        <div className="mb-8">
-          <h1 className="text-3xl md:text-4xl font-black tracking-tight text-[#DABFFF]">Eventi</h1>
-          <p className="text-[#DABFFF]/50 mt-1 text-sm capitalize">{venueId?.replace("-", " ")}</p>
+        <div className="mb-8 flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl md:text-4xl font-black tracking-tight text-[#DABFFF]">Eventi</h1>
+            <p className="text-[#DABFFF]/50 mt-1 text-sm capitalize">{venueId?.replace("-", " ")}</p>
+          </div>
+          {isAdmin && (
+            <button
+              onClick={() => navigate(`/events/${venueId}/form`)}
+              className="bg-[#A06CD5] hover:bg-[#DABFFF] hover:text-[#320842] text-white font-black px-4 py-2 rounded-xl transition-all duration-200 text-sm tracking-widest uppercase shadow-lg shadow-[#A06CD5]/30"
+            >
+              + Crea Evento
+            </button>
+          )}
         </div>
 
         {events.length === 0 ? (
@@ -117,7 +127,7 @@ const Eventi = () => {
                     {isAdmin && (
                       <div className="flex gap-2 mt-1">
                         <button
-                          //   onClick={() => handleEdit(event.id)}  DA IMPLEMENTARE DOPO QUANDO SARA COSTRUITA LA PAGINA ADMIN
+                          onClick={() => navigate(`/events/${venueId}/form?event_id=${event.id}`)}
                           className="flex-1 text-xs bg-[#DABFFF]/10 hover:bg-[#DABFFF]/20 text-[#DABFFF] font-black px-3 py-2 rounded-xl border border-[#DABFFF]/20 transition-all duration-200 uppercase tracking-wider"
                         >
                           Modifica
