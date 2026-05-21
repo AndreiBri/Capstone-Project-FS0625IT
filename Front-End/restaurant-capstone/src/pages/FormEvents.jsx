@@ -15,6 +15,7 @@ const FormEvents = () => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
   const [venues, setVenues] = useState([]);
+  const [imagePreview, setImagePreview] = useState(null);
 
   const token = useSelector((state) => state.auth.token);
 
@@ -68,8 +69,9 @@ const FormEvents = () => {
     data.append("upload_preset", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
     const res = await fetch(`https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`, { method: "POST", body: data });
     const result = await res.json();
-    console.log(result);
     setForm((prev) => ({ ...prev, imageUrl: result.secure_url }));
+    setImagePreview(result.secure_url);
+    setImagePreview(null);
     setUploading(false);
   };
 
@@ -89,8 +91,6 @@ const FormEvents = () => {
       venueId: form.venueId,
     };
 
-    console.log(form.imageUrl);
-
     setLoading(true);
     try {
       if (isEdit) {
@@ -99,6 +99,7 @@ const FormEvents = () => {
         await createEvent(token, payload);
       }
       setSuccess(true);
+      setForm({ title: "", description: "", imageUrl: "", startTime: "", endTime: "", venueId: venueId || "" });
       // eslint-disable-next-line no-unused-vars
     } catch (err) {
       setError("Qualcosa è andato storto. Riprova.");
@@ -195,6 +196,7 @@ const FormEvents = () => {
       </div>
 
       <div className="border-2 border-dashed border-gray-600 rounded-lg p-6 text-center">
+        {imagePreview ? <img src={imagePreview} className="max-h-48 mx-auto rounded mb-4" /> : <p className="text-gray-500">Nessuna immagine selezionata</p>}
         <label className="cursor-pointer text-indigo-400">
           Upload Immagine
           <input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />

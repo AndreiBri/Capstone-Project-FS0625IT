@@ -61,7 +61,6 @@ export const deleteEvent = async (eventId, token) => {
     });
     if (!res.ok) throw new Error(`Errore: ${res.status}`);
 
-    console.log("Evento eliminato con successo");
     return true;
   } catch (err) {
     console.error(`Fallita eliminazione:`, err);
@@ -101,7 +100,6 @@ export const createEvent = async (token, eventData) => {
     });
     if (!res.ok) throw new Error(`Errore: ${res.status}`);
 
-    console.log("Evento creato con successo");
     return true;
   } catch (err) {
     console.error(`Fallita creazione evento:`, err);
