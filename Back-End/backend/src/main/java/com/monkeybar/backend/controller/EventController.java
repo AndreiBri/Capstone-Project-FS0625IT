@@ -34,6 +34,11 @@ public class EventController {
         return ResponseEntity.ok(eventService.create(dto));
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<EventResponseDTO> update(@PathVariable UUID id, @Valid @RequestBody EventRequestDTO dto) throws IOException {
+        return ResponseEntity.ok(eventService.update(dto, id));
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable UUID id) {
         eventService.delete(id);

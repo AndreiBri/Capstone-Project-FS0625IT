@@ -56,6 +56,19 @@ public class EventService {
         return EntityMapper.toEventResponse(eventRepository.save(event));
     }
 
+    public EventResponseDTO update(EventRequestDTO dto, UUID eventId) throws IOException {
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new ResourceNotFoundException("Evento non trovato"));
+
+        event.setTitle(dto.getTitle());
+        event.setDescription(dto.getDescription());
+        event.setStartTime(dto.getStartTime());
+        event.setEndTime(dto.getEndTime());
+        event.setVenue(venueService.getEntityById(dto.getVenueId()));
+
+        return EntityMapper.toEventResponse(eventRepository.save(event));
+    }
+
     public void delete(UUID id) {
         if (!eventRepository.existsById(id)) {
             throw new ResourceNotFoundException("Evento non trovato");
