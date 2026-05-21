@@ -52,6 +52,7 @@ public class EventService {
         event.setStartTime(dto.getStartTime());
         event.setEndTime(dto.getEndTime());
         event.setVenue(venue);
+        event.setImageUrl(dto.getImageUrl());
 
         return EntityMapper.toEventResponse(eventRepository.save(event));
     }
