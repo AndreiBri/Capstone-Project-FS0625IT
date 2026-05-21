@@ -144,7 +144,7 @@ const EventDetails = () => {
             {isAdmin && (
               <div className="flex gap-2 mt-1">
                 <button
-                  //   onClick={() => handleEdit(event.id)}  DA IMPLEMENTARE DOPO QUANDO SARA COSTRUITA LA PAGINA ADMIN
+                  onClick={() => navigate(`/events/${venueId}/form?event_id=${eventData.id}`)}
                   className="flex-1 text-xs bg-[#DABFFF]/10 hover:bg-[#DABFFF]/20 text-[#DABFFF] font-black px-3 py-2 rounded-xl border border-[#DABFFF]/20 transition-all duration-200 uppercase tracking-wider"
                 >
                   Modifica
