@@ -68,6 +68,7 @@ public class EntityMapper {
         dto.setArchived(b.isArchived());
         dto.setVenueId(b.getVenue().getId());
         dto.setVenueName(b.getVenue().getName());
+        dto.setStatus(b.getStatus());
         return dto;
     }
 

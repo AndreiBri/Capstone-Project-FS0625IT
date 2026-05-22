@@ -4,6 +4,7 @@ import com.monkeybar.backend.dto.request.BookingRequestDTO;
 import com.monkeybar.backend.dto.response.BookingResponseDTO;
 import com.monkeybar.backend.entity.Booking;
 import com.monkeybar.backend.entity.Venue;
+import com.monkeybar.backend.enums.BookingStatus;
 import com.monkeybar.backend.exception.ResourceNotFoundException;
 import com.monkeybar.backend.mapper.EntityMapper;
 import com.monkeybar.backend.repository.BookingRepository;
@@ -58,6 +59,27 @@ public class BookingService {
         Booking booking = bookingRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Prenotazione non trovata"));
         booking.setArchived(true);
+        return EntityMapper.toBookingResponse(bookingRepository.save(booking));
+    }
+
+    public BookingResponseDTO confirm(UUID id) {
+        Booking booking = bookingRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Prenotazione non trovata"));
+        booking.setStatus(BookingStatus.CONFIRMED);
+        return EntityMapper.toBookingResponse(bookingRepository.save(booking));
+    }
+
+    public BookingResponseDTO reject(UUID id) {
+        Booking booking = bookingRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Prenotazione non trovata"));
+        booking.setStatus(BookingStatus.REJECTED);
+        return EntityMapper.toBookingResponse(bookingRepository.save(booking));
+    }
+
+    public BookingResponseDTO pending(UUID id) {
+        Booking booking = bookingRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Prenotazione non trovata"));
+        booking.setStatus(BookingStatus.PENDING);
         return EntityMapper.toBookingResponse(bookingRepository.save(booking));
     }
 }

@@ -1,5 +1,6 @@
 package com.monkeybar.backend.entity;
 
+import com.monkeybar.backend.enums.BookingStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -36,6 +37,10 @@ public class Booking {
     private Integer guests;
 
     private boolean archived = false;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private BookingStatus status = BookingStatus.PENDING;
 
     @ManyToOne
     @JoinColumn(name = "venue_id", nullable = false)

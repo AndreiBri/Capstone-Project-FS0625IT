@@ -1,5 +1,6 @@
 package com.monkeybar.backend.dto.response;
 
+import com.monkeybar.backend.enums.BookingStatus;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -16,4 +17,5 @@ public class BookingResponseDTO {
     private boolean archived;
     private UUID venueId;
     private String venueName;
+    private BookingStatus status;
 }
