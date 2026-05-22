@@ -70,7 +70,8 @@ export default function BookingForm() {
     date: "",
     time: "",
     guests: 1,
-    venueSlug: venueId ?? "",
+    selectedVenueId: venueId ?? "",
+    notes: "",
   });
   const [loading, setLoading] = useState(false);
   const [modal, setModal] = useState(null);
@@ -108,11 +109,11 @@ export default function BookingForm() {
     setLoading(true);
     try {
       const bookingDate = `${form.date}T${form.time}`;
-      await createBooking(form.customerName, form.customerEmail, form.customerPhone, bookingDate, parseInt(form.guests), form.venueSlug);
+      await createBooking(form.customerName, form.customerEmail, form.customerPhone, bookingDate, parseInt(form.guests), form.selectedVenueId, form.notes);
       localStorage.setItem("last_booking_time", Date.now().toString());
       setCooldownMinutes(COOLDOWN_MINUTES);
       setModal("pending");
-      setForm({ customerName: "", customerEmail: "", customerPhone: "", date: "", time: "", guests: 1, venueSlug: "" });
+      setForm({ customerName: "", customerEmail: "", customerPhone: "", date: "", time: "", guests: 1, selectedVenueId: "", notes: "" });
       // eslint-disable-next-line no-unused-vars
     } catch (err) {
       setError("Qualcosa è andato storto. Riprova.");
@@ -129,7 +130,7 @@ export default function BookingForm() {
         setEventInfo(data);
         const eventDate = new Date(data.startTime).toISOString().split("T")[0];
         const eventTime = new Date(data.startTime).toTimeString().slice(0, 5);
-        setForm((prev) => ({ ...prev, date: eventDate, time: eventTime, venueSlug: venueId ?? prev.venueSlug }));
+        setForm((prev) => ({ ...prev, date: eventDate, time: eventTime, selectedVenueId: venueId ?? prev.selectedVenueId }));
       })
       .catch(console.error);
   }, [eventId]);
@@ -189,15 +190,22 @@ export default function BookingForm() {
             {venueId ? (
               <div>
                 <label className="block text-xs font-black tracking-widest text-[#A06CD5] uppercase mb-1.5">Sede</label>
-                <input type="text" value={venueName ?? ""} className={inputClass} disabled />
+                <input type="text" value={venueName ?? venues.find((v) => v.id === venueId)?.name ?? ""} className={inputClass} disabled />
               </div>
             ) : (
               <div>
                 <label className="block text-xs font-black tracking-widest text-[#A06CD5] uppercase mb-1.5">Sede</label>
-                <select name="venueSlug" required value={form.venueSlug} onChange={handleChange} className={inputClass} disabled={cooldownMinutes > 0}>
+                <select
+                  name="selectedVenueId"
+                  required
+                  value={form.selectedVenueId}
+                  onChange={handleChange}
+                  className={inputClass}
+                  disabled={cooldownMinutes > 0}
+                >
                   <option value="">Seleziona una sede</option>
                   {venues.map((v) => (
-                    <option key={v.slug} value={v.slug}>
+                    <option key={v.slug} value={v.id}>
                       {v.name}
                     </option>
                   ))}
@@ -294,6 +302,22 @@ export default function BookingForm() {
                 value={form.guests}
                 onChange={handleChange}
                 className={inputClass}
+                disabled={cooldownMinutes > 0}
+              />
+            </div>
+
+            {/* Note */}
+            <div>
+              <label className="block text-xs font-black tracking-widest text-[#A06CD5] uppercase mb-1.5">
+                Note <span className="text-[#DABFFF]/30 normal-case font-normal tracking-normal">(opzionale)</span>
+              </label>
+              <textarea
+                name="notes"
+                value={form.notes}
+                onChange={handleChange}
+                rows={3}
+                placeholder="Allergie, richieste speciali, occasioni particolari..."
+                className={`${inputClass} resize-none w-full`}
                 disabled={cooldownMinutes > 0}
               />
             </div>

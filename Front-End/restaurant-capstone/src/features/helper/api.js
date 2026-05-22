@@ -147,16 +147,63 @@ export const registerUser = async (email, password, role, venueSlug, token) => {
 
 // ----------- BOOKING ----------------------
 
-export const createBooking = async (customerName, customerEmail, customerPhone, bookingDate, guests, venueId) => {
+export const createBooking = async (customerName, customerEmail, customerPhone, bookingDate, guests, venueId, notes) => {
   const res = await fetch(`${BASE_URL}/api/bookings`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ customerName, customerEmail, customerPhone, bookingDate, guests, venueId }),
+    body: JSON.stringify({ customerName, customerEmail, customerPhone, bookingDate, guests, venueId, notes }),
   });
 
   if (!res.ok) throw new Error("Prenotazione fallita");
 
   return res.json();
+};
+
+export const fetchBookingsByVenue = async (venueId, token) => {
+  const res = await fetch(`${BASE_URL}/api/bookings/${venueId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (!res.ok) throw new Error(`Errore: ${res.status}`);
+  return res.json();
+};
+
+export const confirmBooking = async (id, token) => {
+  try {
+    const res = await fetch(`${BASE_URL}/api/bookings/${id}/confirm`, {
+      method: "PATCH",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!res.ok) throw new Error(`Errore: ${res.status}`);
+    return res.json();
+  } catch (err) {
+    console.error("Errore conferma prenotazione:", err);
+  }
+};
+
+export const rejectBooking = async (id, token) => {
+  try {
+    const res = await fetch(`${BASE_URL}/api/bookings/${id}/reject`, {
+      method: "PATCH",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!res.ok) throw new Error(`Errore: ${res.status}`);
+    return res.json();
+  } catch (err) {
+    console.error("Errore rifiuto prenotazione:", err);
+  }
+};
+
+export const archiveBooking = async (id, token) => {
+  try {
+    const res = await fetch(`${BASE_URL}/api/bookings/${id}/archive`, {
+      method: "PATCH",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!res.ok) throw new Error(`Errore: ${res.status}`);
+    return res.json();
+  } catch (err) {
+    console.error("Errore archiviazione prenotazione:", err);
+  }
 };
