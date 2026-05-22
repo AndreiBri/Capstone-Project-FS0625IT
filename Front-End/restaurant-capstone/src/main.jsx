@@ -13,11 +13,12 @@ import Eventi from "./pages/Eventi.jsx";
 import Login from "./pages/Login.jsx";
 import BookingForm from "./pages/BookingForm.jsx";
 
-//import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistor } from "./features/store/store.js";
 import EventDetails from "./pages/EventDetails.jsx";
 import FormEvents from "./pages/FormEvents.jsx";
+import AdminPanel from "./pages/AdminPanel.jsx";
 
 const router = createBrowserRouter([
   {
@@ -32,6 +33,14 @@ const router = createBrowserRouter([
       { path: "events/:venueId/form", element: <FormEvents /> },
       { path: "booking/form", element: <BookingForm /> },
       { path: "login", element: <Login /> },
+      {
+        path: "admin",
+        element: (
+          <ProtectedRoute allowedRoles={["OWNER", "SUPERVISOR"]}>
+            <AdminPanel />
+          </ProtectedRoute>
+        ),
+      },
       { path: "*", element: <NotFound /> },
     ],
   },
