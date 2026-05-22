@@ -50,6 +50,7 @@ public class BookingService {
         booking.setCustomerPhone(dto.getCustomerPhone());
         booking.setBookingDate(LocalDate.from(dto.getBookingDate()));
         booking.setGuests(dto.getGuests());
+        booking.setNotes(dto.getNotes());
         booking.setVenue(venue);
 
         return EntityMapper.toBookingResponse(bookingRepository.save(booking));

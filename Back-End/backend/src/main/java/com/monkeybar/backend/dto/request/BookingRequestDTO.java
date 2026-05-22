@@ -28,4 +28,6 @@ public class BookingRequestDTO {
 
     @NotNull
     private UUID venueId;
+
+    private String notes;
 }

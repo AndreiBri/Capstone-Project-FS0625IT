@@ -69,6 +69,7 @@ public class EntityMapper {
         dto.setVenueId(b.getVenue().getId());
         dto.setVenueName(b.getVenue().getName());
         dto.setStatus(b.getStatus());
+        dto.setNotes(b.getNotes());
         return dto;
     }
 

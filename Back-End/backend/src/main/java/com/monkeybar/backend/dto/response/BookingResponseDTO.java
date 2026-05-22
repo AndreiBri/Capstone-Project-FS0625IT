@@ -18,4 +18,5 @@ public class BookingResponseDTO {
     private UUID venueId;
     private String venueName;
     private BookingStatus status;
+    private String notes;
 }

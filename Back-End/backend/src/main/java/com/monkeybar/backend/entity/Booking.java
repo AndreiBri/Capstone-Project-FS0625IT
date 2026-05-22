@@ -38,6 +38,9 @@ public class Booking {
 
     private boolean archived = false;
 
+    @Column(columnDefinition = "TEXT")
+    private String notes;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private BookingStatus status = BookingStatus.PENDING;
