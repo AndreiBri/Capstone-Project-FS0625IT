@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import { createBooking, fetchEventById } from "../features/helper/api";
+import { createBooking, fetchEventById, fetchAllVenues } from "../features/helper/api";
 
 // --------------------- Config ----------------------------------------
 const COOLDOWN_MINUTES = 30;
@@ -61,6 +61,7 @@ export default function BookingForm() {
   const [searchParams] = useSearchParams();
   const eventId = searchParams.get("event_id");
   const venueId = searchParams.get("venue_id");
+  const venueName = searchParams.get("venue_name");
 
   const [form, setForm] = useState({
     customerName: "",
@@ -69,12 +70,14 @@ export default function BookingForm() {
     date: "",
     time: "",
     guests: 1,
+    venueSlug: venueId ?? "",
   });
   const [loading, setLoading] = useState(false);
   const [modal, setModal] = useState(null);
   const [error, setError] = useState("");
   const [cooldownMinutes, setCooldownMinutes] = useState(() => getCooldownRemaining());
   const [eventInfo, setEventInfo] = useState(null);
+  const [venues, setVenues] = useState([]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -105,11 +108,11 @@ export default function BookingForm() {
     setLoading(true);
     try {
       const bookingDate = `${form.date}T${form.time}`;
-      await createBooking(form.customerName, form.customerEmail, form.customerPhone, bookingDate, parseInt(form.guests), venueId);
+      await createBooking(form.customerName, form.customerEmail, form.customerPhone, bookingDate, parseInt(form.guests), form.venueSlug);
       localStorage.setItem("last_booking_time", Date.now().toString());
       setCooldownMinutes(COOLDOWN_MINUTES);
       setModal("pending");
-      setForm({ customerName: "", customerEmail: "", customerPhone: "", date: "", time: "", guests: 1 });
+      setForm({ customerName: "", customerEmail: "", customerPhone: "", date: "", time: "", guests: 1, venueSlug: "" });
       // eslint-disable-next-line no-unused-vars
     } catch (err) {
       setError("Qualcosa è andato storto. Riprova.");
@@ -126,10 +129,22 @@ export default function BookingForm() {
         setEventInfo(data);
         const eventDate = new Date(data.startTime).toISOString().split("T")[0];
         const eventTime = new Date(data.startTime).toTimeString().slice(0, 5);
-        setForm((prev) => ({ ...prev, date: eventDate, time: eventTime }));
+        setForm((prev) => ({ ...prev, date: eventDate, time: eventTime, venueSlug: venueId ?? prev.venueSlug }));
       })
       .catch(console.error);
   }, [eventId]);
+
+  useEffect(() => {
+    const loadAllVenues = async () => {
+      try {
+        const data = await fetchAllVenues();
+        setVenues(data);
+      } catch (err) {
+        console.error("Errore caricamento venues:", err);
+      }
+    };
+    loadAllVenues();
+  }, []);
 
   return (
     <div className="min-h-screen bg-[#1a0526] flex items-center justify-center px-4 py-12">
@@ -170,6 +185,26 @@ export default function BookingForm() {
         {/* Card form */}
         <div className="bg-[#320842]/80 backdrop-blur-xl border border-[#DABFFF]/20 shadow-xl shadow-[#A06CD5]/10 rounded-3xl p-8">
           <form onSubmit={handleSubmit} className="space-y-5">
+            {/* Sede */}
+            {venueId ? (
+              <div>
+                <label className="block text-xs font-black tracking-widest text-[#A06CD5] uppercase mb-1.5">Sede</label>
+                <input type="text" value={venueName ?? ""} className={inputClass} disabled />
+              </div>
+            ) : (
+              <div>
+                <label className="block text-xs font-black tracking-widest text-[#A06CD5] uppercase mb-1.5">Sede</label>
+                <select name="venueSlug" required value={form.venueSlug} onChange={handleChange} className={inputClass} disabled={cooldownMinutes > 0}>
+                  <option value="">Seleziona una sede</option>
+                  {venues.map((v) => (
+                    <option key={v.slug} value={v.slug}>
+                      {v.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+
             {/* Nome */}
             <div>
               <label className="block text-xs font-black tracking-widest text-[#A06CD5] uppercase mb-1.5">Nome & Cognome</label>
