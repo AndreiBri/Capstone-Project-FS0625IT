@@ -49,14 +49,14 @@ public class MenuController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyRole('OWNER', 'SUPERVISOR')")
-    public ResponseEntity<MenuItemResponseDTO> update(@PathVariable UUID id, @Valid @RequestBody MenuItemRequestDTO dto) {
-        return ResponseEntity.ok(menuService.update(id, dto));
+    public ResponseEntity<MenuItemResponseDTO> update(@PathVariable UUID id, @Valid @RequestBody MenuItemRequestDTO dto, Principal principal) {
+        return ResponseEntity.ok(menuService.update(id, dto, principal.getName()));
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyRole('OWNER', 'SUPERVISOR')")
-    public ResponseEntity<Void> delete(@PathVariable UUID id) {
-        menuService.delete(id);
+    public ResponseEntity<Void> delete(@PathVariable UUID id, Principal principal) {
+        menuService.delete(id, principal.getName());
         return ResponseEntity.noContent().build();
     }
 }

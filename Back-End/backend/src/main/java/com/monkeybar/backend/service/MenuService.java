@@ -76,9 +76,16 @@ public class MenuService {
         return EntityMapper.toMenuItemResponse(menuItemRepository.save(item));
     }
 
-    public MenuItemResponseDTO update(UUID id, MenuItemRequestDTO dto) {
+    public MenuItemResponseDTO update(UUID id, MenuItemRequestDTO dto, String userEmail) {
         MenuItem item = menuItemRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Prodotto non trovato"));
+
+        Profile profile = profileService.getEntityByEmail(userEmail);
+
+        boolean isOwner = "OWNER".equals(profile.getRole().name());
+        if (!isOwner && !item.getVenue().getId().equals(profile.getVenue().getId())) {
+            throw new UnauthorizedException("Non autorizzato a modificare questo locale");
+        }
 
         item.setName(dto.getName());
         item.setCategory(dto.getCategory());
@@ -86,15 +93,21 @@ public class MenuService {
         item.setDescription(dto.getDescription());
         item.setAllergens(dto.getAllergens());
         item.setImageUrl(dto.getImageUrl());
-        item.setVisible(true);
 
         return EntityMapper.toMenuItemResponse(menuItemRepository.save(item));
     }
 
-    public void delete(UUID id) {
-        if (!menuItemRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Prodotto non trovato");
+    public void delete(UUID id, String userEmail) {
+        MenuItem item = menuItemRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Prodotto non trovato"));
+
+        Profile profile = profileService.getEntityByEmail(userEmail);
+
+        boolean isOwner = "OWNER".equals(profile.getRole().name());
+        if (!isOwner && !item.getVenue().getId().equals(profile.getVenue().getId())) {
+            throw new UnauthorizedException("Non autorizzato a modificare questo locale");
         }
+
         menuItemRepository.deleteById(id);
     }
 }
