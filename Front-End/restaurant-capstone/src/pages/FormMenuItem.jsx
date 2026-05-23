@@ -5,7 +5,6 @@ import { createMenuItem, getMenuItemById, updateMenuItem } from "../features/hel
 
 const FormMenuItem = () => {
   const { venueId } = useParams();
-  const { profile } = useSelector((state) => state.auth);
   const [searchParams] = useSearchParams();
   const itemId = searchParams.get("item_id");
 

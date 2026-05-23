@@ -21,6 +21,7 @@ import FormEvents from "./pages/FormEvents.jsx";
 import AdminPanel from "./pages/AdminPanel.jsx";
 import AdminBookings from "./pages/AdminBookings.jsx";
 import RegisterStaff from "./pages/RegisterStaff.jsx";
+import FormMenuItem from "./pages/FormMenuItem.jsx";
 
 const router = createBrowserRouter([
   {
@@ -32,7 +33,6 @@ const router = createBrowserRouter([
       { path: "menu/:venueId", element: <Menu /> },
       { path: "events/:venueId", element: <Eventi /> },
       { path: "events/:venueId/:eventId", element: <EventDetails /> },
-      { path: "events/:venueId/form", element: <FormEvents /> },
       { path: "booking/form", element: <BookingForm /> },
       { path: "login", element: <Login /> },
       {
@@ -44,10 +44,26 @@ const router = createBrowserRouter([
         ),
       },
       {
+        path: "events/:venueId/form",
+        element: (
+          <ProtectedRoute allowedRoles={["OWNER", "SUPERVISOR"]}>
+            <FormEvents />
+          </ProtectedRoute>
+        ),
+      },
+      {
         path: "admin/bookings",
         element: (
           <ProtectedRoute allowedRoles={["OWNER", "SUPERVISOR"]}>
             <AdminBookings />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "menu/:venueId/form",
+        element: (
+          <ProtectedRoute allowedRoles={["OWNER", "SUPERVISOR"]}>
+            <FormMenuItem />
           </ProtectedRoute>
         ),
       },
