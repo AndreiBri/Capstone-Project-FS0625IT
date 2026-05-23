@@ -130,14 +130,14 @@ export const loginUser = async (email, password) => {
   return res.json();
 };
 
-export const registerUser = async (email, password, role, venueSlug, token) => {
+export const registerUser = async (email, password, role, venueSlug, token, alias) => {
   const res = await fetch(`${BASE_URL}/api/auth/register`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ email, password, role, venueSlug }),
+    body: JSON.stringify({ email, password, role, venueSlug, alias }),
   });
 
   if (!res.ok) throw new Error("Registrazione fallita");

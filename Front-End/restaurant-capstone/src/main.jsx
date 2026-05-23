@@ -20,6 +20,7 @@ import EventDetails from "./pages/EventDetails.jsx";
 import FormEvents from "./pages/FormEvents.jsx";
 import AdminPanel from "./pages/AdminPanel.jsx";
 import AdminBookings from "./pages/AdminBookings.jsx";
+import RegisterStaff from "./pages/RegisterStaff.jsx";
 
 const router = createBrowserRouter([
   {
@@ -47,6 +48,14 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute allowedRoles={["OWNER", "SUPERVISOR"]}>
             <AdminBookings />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "admin/register-staff",
+        element: (
+          <ProtectedRoute allowedRoles={["OWNER"]}>
+            <RegisterStaff />
           </ProtectedRoute>
         ),
       },

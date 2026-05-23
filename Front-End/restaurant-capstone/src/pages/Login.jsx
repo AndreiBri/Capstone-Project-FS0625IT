@@ -25,7 +25,7 @@ const Login = () => {
         setProfile({ profileId: data.profileId, email: data.email, role: data.role, venueId: data.venueId, venueName: data.venueName, alias: data.alias }),
       );
       navigate("/");
-    } catch (err) {
+    } catch {
       setErrorMsg("Login fallito: controlla email o password");
     }
   };
