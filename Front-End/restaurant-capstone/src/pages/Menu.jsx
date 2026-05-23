@@ -129,7 +129,10 @@ const Menu = () => {
                   className={`flex items-center gap-4 px-6 py-4 ${!item.visible ? "opacity-40" : ""} hover:bg-[#A06CD5]/5 transition-colors duration-150`}
                 >
                   {/* Immagine */}
-                  <div className="shrink-0 w-20 h-20 rounded-2xl overflow-hidden border border-[#DABFFF]/10 bg-[#320842] flex items-center justify-center">
+                  <div
+                    onClick={() => navigate(`/menu/${venueId}/${item.id}`)}
+                    className="shrink-0 w-20 h-20 rounded-2xl overflow-hidden border border-[#DABFFF]/10 bg-[#320842] flex items-center justify-center cursor-pointer"
+                  >
                     {item.imageUrl ? (
                       <img src={item.imageUrl} alt={item.name} className="w-full h-full object-cover" />
                     ) : (
@@ -138,7 +141,7 @@ const Menu = () => {
                   </div>
 
                   {/* Nome + badge */}
-                  <div className="flex items-center gap-2 flex-wrap flex-1 min-w-0">
+                  <div className="flex items-center gap-2 flex-wrap flex-1 min-w-0 cursor-pointer" onClick={() => navigate(`/menu/${venueId}/${item.id}`)}>
                     <span className="font-black text-[#DABFFF]">{item.name}</span>
                     {activeCategory === "all" && (
                       <span className="text-xs px-2 py-0.5 rounded-full border border-[#DABFFF]/10 text-[#DABFFF]/40">{item.category}</span>

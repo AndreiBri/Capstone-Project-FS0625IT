@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { createMenuItem, getMenuItemById, updateMenuItem } from "../features/helper/api";
+import { createMenuItem, fetchFullMenu, fetchVenue, getMenuItemById, updateMenuItem } from "../features/helper/api";
 
 const FormMenuItem = () => {
   const { venueId } = useParams();
@@ -12,6 +12,11 @@ const FormMenuItem = () => {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
+  const [categories, setCategories] = useState([]);
+  const [allergenSuggestions, setAllergenSuggestions] = useState([]);
+  const [customAllergen, setCustomAllergen] = useState("");
+
+  const COMMON_ALLERGENS = ["Glutine", "Lattosio", "Uova", "Frutta secca", "Arachidi", "Pesce", "Crostacei", "Soia", "Sedano", "Senape", "Sesamo", "Lupini", "Molluschi", "Anidride solforosa"];
   const navigate = useNavigate();
 
   const token = useSelector((state) => state.auth.token);
@@ -25,6 +30,21 @@ const FormMenuItem = () => {
     allergens: [],
     venueId: venueId || "",
   });
+
+  useEffect(() => {
+    if (!venueId || !token) return;
+    fetchFullMenu(venueId, token)
+      .then((data) => {
+        setCategories([...new Set(data.map((i) => i.category).filter(Boolean))]);
+        setAllergenSuggestions([...new Set(data.flatMap((i) => i.allergens ?? []).filter(Boolean))]);
+        if (data.length > 0) {
+          setForm((prev) => ({ ...prev, venueId: data[0].venueId }));
+        } else {
+          fetchVenue(venueId).then((v) => setForm((prev) => ({ ...prev, venueId: v.id }))).catch(() => {});
+        }
+      })
+      .catch(() => {});
+  }, [venueId, token]);
 
   useEffect(() => {
     if (!itemId) return;
@@ -85,7 +105,7 @@ const FormMenuItem = () => {
     <div className="min-h-screen bg-linear-to-b from-[#1C0127] to-[#320842] px-4 py-10">
       <div className="max-w-lg mx-auto">
         <button type="button" onClick={() => navigate(-1)} className="text-[#DABFFF]/50 hover:text-[#DABFFF] text-sm mb-6 flex items-center gap-1 transition">
-          ← Torna al menu
+          Torna al menu
         </button>
 
         <h1 className="text-4xl font-black text-white mb-2 tracking-tight">{itemId ? "Modifica Item" : "Crea Item"}</h1>
@@ -109,8 +129,14 @@ const FormMenuItem = () => {
             value={form.category}
             onChange={(e) => setForm({ ...form, category: e.target.value })}
             className="w-full p-4 rounded-lg bg-[#320842]/60 text-white border border-[#DABFFF]/30 focus:border-[#A06CD5] focus:outline-none"
+            list="categories-list"
             required
           />
+          <datalist id="categories-list">
+            {categories.map((c) => (
+              <option key={c} value={c} />
+            ))}
+          </datalist>
 
           <input
             type="number"
@@ -123,13 +149,64 @@ const FormMenuItem = () => {
             required
           />
 
-          <input
-            type="text"
-            placeholder="Allergeni (es. glutine, lattosio, uova)"
-            value={form.allergens.join(", ")}
-            onChange={(e) => setForm({ ...form, allergens: e.target.value.split(",").map((s) => s.trim()).filter(Boolean) })}
-            className="w-full p-4 rounded-lg bg-[#320842]/60 text-white border border-[#DABFFF]/30 focus:border-[#A06CD5] focus:outline-none"
-          />
+          <div className="w-full p-4 rounded-lg bg-[#320842]/60 border border-[#DABFFF]/30">
+            <p className="text-[#DABFFF]/60 text-xs font-black mb-3">Allergeni</p>
+            <div className="flex flex-wrap gap-2 mb-3">
+              {[...new Set([...COMMON_ALLERGENS, ...allergenSuggestions])].map((a) => (
+                <label key={a} className="flex items-center gap-1.5 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={form.allergens.includes(a)}
+                    onChange={(e) =>
+                      setForm({
+                        ...form,
+                        allergens: e.target.checked
+                          ? [...form.allergens, a]
+                          : form.allergens.filter((x) => x !== a),
+                      })
+                    }
+                    className="accent-[#A06CD5]"
+                  />
+                  <span className="text-xs text-[#DABFFF]/70">{a}</span>
+                </label>
+              ))}
+            </div>
+            <div className="flex gap-2">
+              <input
+                type="text"
+                placeholder="Aggiungi allergene custom..."
+                value={customAllergen}
+                onChange={(e) => setCustomAllergen(e.target.value)}
+                className="flex-1 p-2 rounded-lg bg-[#1a0526] text-white text-sm border border-[#DABFFF]/20 focus:border-[#A06CD5] focus:outline-none"
+              />
+              <button
+                type="button"
+                onClick={() => {
+                  const val = customAllergen.trim();
+                  if (val && !form.allergens.includes(val)) {
+                    setForm({ ...form, allergens: [...form.allergens, val] });
+                  }
+                  setCustomAllergen("");
+                }}
+                className="px-3 py-2 bg-[#A06CD5] text-white text-xs font-black rounded-lg hover:bg-[#8a5bc0] transition"
+              >
+                +
+              </button>
+            </div>
+            {form.allergens.length > 0 && (
+              <div className="flex flex-wrap gap-1 mt-3">
+                {form.allergens.map((a) => (
+                  <span
+                    key={a}
+                    onClick={() => setForm({ ...form, allergens: form.allergens.filter((x) => x !== a) })}
+                    className="text-xs px-2 py-1 rounded-full bg-[#A06CD5]/20 text-[#DABFFF] border border-[#A06CD5]/30 cursor-pointer hover:bg-red-400/20 hover:border-red-400/30 hover:text-red-300 transition"
+                  >
+                    {a} ×
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
 
           <textarea
             placeholder="Descrizione (opzionale)"

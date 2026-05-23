@@ -10,6 +10,8 @@ const EventDetails = () => {
 
   const [eventData, setEventData] = useState(null);
   const [loading, setLoading] = useState(true);
+  // eslint-disable-next-line no-unused-vars
+  const [error, setError] = useState(null);
 
   const navigate = useNavigate();
 
@@ -23,8 +25,8 @@ const EventDetails = () => {
       try {
         const data = await fetchEventById(eventId);
         setEventData(data);
-      } catch (err) {
-        console.error(err);
+      } catch {
+        setError("Impossibile caricare l'evento, riprova.");
       } finally {
         setLoading(false);
       }
@@ -37,7 +39,7 @@ const EventDetails = () => {
       <div className="min-h-screen bg-[#1a0526] flex items-center justify-center">
         <div className="flex flex-col items-center gap-3">
           <div className="w-8 h-8 border-2 border-[#A06CD5] border-t-transparent rounded-full animate-spin" />
-          <p className="text-[#DABFFF]/50 text-sm">Caricamento eventi...</p>
+          <p className="text-[#DABFFF]/50 text-sm">Caricamento evento...</p>
         </div>
       </div>
     );
@@ -47,6 +49,17 @@ const EventDetails = () => {
     return (
       <div className="min-h-screen bg-[#1a0526] flex items-center justify-center">
         <p className="text-[#DABFFF]/50 text-sm">L'evento non é stato trovato.</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-[#1a0526] flex flex-col items-center justify-center gap-4">
+        <p className="text-red-400 text-sm">{error}</p>
+        <button onClick={() => navigate(-1)} className="text-[#DABFFF]/50 hover:text-[#DABFFF] text-sm transition">
+          Torna indietro
+        </button>
       </div>
     );
   }
@@ -86,7 +99,11 @@ const EventDetails = () => {
           className="mb-8 inline-flex items-center gap-2 text-[#DABFFF]/60 hover:text-[#DABFFF] transition-colors cursor-pointer text-sm"
         >
           <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-            <path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
+            <path
+              fillRule="evenodd"
+              d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
+              clipRule="evenodd"
+            />
           </svg>
           Torna agli eventi
         </button>
@@ -106,22 +123,31 @@ const EventDetails = () => {
         <div className="flex flex-wrap gap-4 mb-8">
           <div className="flex items-center gap-2 text-[#DABFFF]/70 text-sm">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-[#A06CD5]" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
+              <path
+                fillRule="evenodd"
+                d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
+                clipRule="evenodd"
+              />
             </svg>
             <span className="capitalize">{formatDate(startDate)}</span>
           </div>
           <div className="flex items-center gap-2 text-[#DABFFF]/70 text-sm">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-[#A06CD5]" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
+              <path
+                fillRule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
+                clipRule="evenodd"
+              />
             </svg>
-            <span>{formatTime(startDate)}{endDate && ` - ${formatTime(endDate)}`}</span>
+            <span>
+              {formatTime(startDate)}
+              {endDate && ` - ${formatTime(endDate)}`}
+            </span>
           </div>
         </div>
 
         {/* Descrizione */}
-        {eventData.description && (
-          <p className="text-[#DABFFF]/80 leading-relaxed whitespace-pre-line text-base mb-10">{eventData.description}</p>
-        )}
+        {eventData.description && <p className="text-[#DABFFF]/80 leading-relaxed whitespace-pre-line text-base mb-10">{eventData.description}</p>}
 
         {/* Bottoni */}
         <div className="flex flex-col gap-3">

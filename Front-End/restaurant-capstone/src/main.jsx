@@ -22,6 +22,7 @@ import AdminPanel from "./pages/AdminPanel.jsx";
 import AdminBookings from "./pages/AdminBookings.jsx";
 import RegisterStaff from "./pages/RegisterStaff.jsx";
 import FormMenuItem from "./pages/FormMenuItem.jsx";
+import ItemDetail from "./pages/ItemDetail.jsx";
 
 const router = createBrowserRouter([
   {
@@ -33,6 +34,7 @@ const router = createBrowserRouter([
       { path: "menu/:venueId", element: <Menu /> },
       { path: "events/:venueId", element: <Eventi /> },
       { path: "events/:venueId/:eventId", element: <EventDetails /> },
+      { path: "menu/:venueId/:itemId", element: <ItemDetail /> },
       { path: "booking/form", element: <BookingForm /> },
       { path: "login", element: <Login /> },
       {
