@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { fetchPublicMenu, fetchFullMenu, toogleMenuItemsVisibility } from "../features/helper/api";
+import { fetchPublicMenu, fetchFullMenu, toogleMenuItemsVisibility, deleteMenuItem } from "../features/helper/api";
 import { useSelector } from "react-redux";
 
 // --- Main Menu ---
@@ -12,6 +12,7 @@ const Menu = () => {
   const [menuItems, setMenuItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState("all");
+  const [errorMsg, setErrorMsg] = useState("");
 
   const isAdmin = profile && (profile.role === "OWNER" || profile.role === "SUPERVISOR");
 
@@ -38,8 +39,18 @@ const Menu = () => {
     try {
       const update = await toogleMenuItemsVisibility(item.id, token);
       setMenuItems((prev) => prev.map((i) => (i.id === item.id ? update : i)));
-    } catch (err) {
-      console.error(err);
+    } catch {
+      setErrorMsg("Impossibile aggiornare la visibilità, riprova");
+    }
+  };
+
+  const handleDelete = async (item) => {
+    if (!window.confirm(`Eliminare "${item.name}"?`)) return;
+    try {
+      await deleteMenuItem(item.id, token);
+      setMenuItems((prev) => prev.filter((i) => i.id !== item.id));
+    } catch {
+      setErrorMsg("Eliminazione fallita, riprova.");
     }
   };
 
@@ -69,8 +80,21 @@ const Menu = () => {
         <div className="text-center mb-8">
           <h1 className="text-3xl md:text-4xl font-black tracking-tight text-[#DABFFF] mb-1">Menu</h1>
           <p className="text-[#A06CD5] font-semibold text-sm uppercase tracking-widest">{menuItems[0]?.venueName ?? venueId}</p>
-          {isAdmin && <p className="text-[#DABFFF]/30 text-xs mt-2">Modalità admin — puoi nascondere le voci dal menu pubblico</p>}
+          {isAdmin && (
+            <div className="mt-4 flex flex-col items-center gap-2">
+              <p className="text-[#DABFFF]/30 text-xs">Modalità admin — puoi modificare, nascondere ed eliminare le voci</p>
+              <button
+                onClick={() => navigate(`/menu/${venueId}/form`)}
+                className="mt-1 px-5 py-2 bg-[#A06CD5] text-white text-sm font-black rounded-full hover:bg-[#8a5bc0] transition shadow-lg shadow-[#A06CD5]/30"
+              >
+                + Aggiungi Item
+              </button>
+            </div>
+          )}
         </div>
+
+        {/* Error PopUp */}
+        {errorMsg && <div className="mb-4 p-4 bg-red-600/80 text-white rounded-lg text-center font-medium">{errorMsg}</div>}
 
         {/* Card */}
         <div className="bg-[#320842]/80 backdrop-blur-xl border border-[#DABFFF]/10 rounded-3xl overflow-hidden shadow-xl shadow-[#A06CD5]/10">
@@ -100,48 +124,53 @@ const Menu = () => {
           ) : (
             <div className="divide-y divide-[#DABFFF]/5">
               {filtered.map((item) => (
-                <div key={item.id} className={`relative group ${!item.visible ? "opacity-40" : ""}`}>
-                  {/* Riga cliccabile */}
-                  <div
-                    onClick={() => navigate(`/product/${venueId}/${item.id}`)}
-                    className="flex items-center justify-between gap-4 px-6 py-4 cursor-pointer hover:bg-[#A06CD5]/5 transition-colors duration-150"
-                  >
-                    <div className="flex items-center gap-3 flex-1 min-w-0">
-                      {/* Immagine */}
-                      <div className="shrink-0 w-20 h-20 rounded-2xl overflow-hidden border border-[#DABFFF]/10 bg-[#320842] flex items-center justify-center">
-                        {item.imageUrl ? (
-                          <img src={item.imageUrl} alt={item.name} className="w-full h-full object-cover" />
-                        ) : (
-                          <span className="text-[#A06CD5] font-black text-2xl">{item.name?.charAt(0).toUpperCase()}</span>
-                        )}
-                      </div>
-
-                      {/* Nome + badge */}
-                      <div className="flex items-center gap-2 flex-wrap min-w-0">
-                        <span className="font-black text-[#DABFFF]">{item.name}</span>
-                        {activeCategory === "all" && (
-                          <span className="text-xs px-2 py-0.5 rounded-full border border-[#DABFFF]/10 text-[#DABFFF]/40">{item.category}</span>
-                        )}
-                        {!item.visible && (
-                          <span className="text-xs px-2 py-0.5 rounded-full border border-red-400/30 bg-red-400/10 text-red-300">Nascosto</span>
-                        )}
-                      </div>
-                    </div>
-
-                    <span className="font-black text-[#A06CD5] shrink-0">{item.price != null ? `${Number(item.price).toFixed(2)}€` : "—"}</span>
+                <div
+                  key={item.id}
+                  className={`flex items-center gap-4 px-6 py-4 ${!item.visible ? "opacity-40" : ""} hover:bg-[#A06CD5]/5 transition-colors duration-150`}
+                >
+                  {/* Immagine */}
+                  <div className="shrink-0 w-20 h-20 rounded-2xl overflow-hidden border border-[#DABFFF]/10 bg-[#320842] flex items-center justify-center">
+                    {item.imageUrl ? (
+                      <img src={item.imageUrl} alt={item.name} className="w-full h-full object-cover" />
+                    ) : (
+                      <span className="text-[#A06CD5] font-black text-2xl">{item.name?.charAt(0).toUpperCase()}</span>
+                    )}
                   </div>
 
-                  {/* Admin toggle */}
+                  {/* Nome + badge */}
+                  <div className="flex items-center gap-2 flex-wrap flex-1 min-w-0">
+                    <span className="font-black text-[#DABFFF]">{item.name}</span>
+                    {activeCategory === "all" && (
+                      <span className="text-xs px-2 py-0.5 rounded-full border border-[#DABFFF]/10 text-[#DABFFF]/40">{item.category}</span>
+                    )}
+                    {!item.visible && <span className="text-xs px-2 py-0.5 rounded-full border border-red-400/30 bg-red-400/10 text-red-300">Nascosto</span>}
+                  </div>
+
+                  {/* Prezzo */}
+                  <span className="font-black text-[#A06CD5] shrink-0">{item.price != null ? `${Number(item.price).toFixed(2)}€` : "—"}</span>
+
+                  {/* Admin actions */}
                   {isAdmin && (
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleToogleVisible(item);
-                      }}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-black px-3 py-1.5 rounded-lg border opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-red-400/10 hover:bg-red-400/20 text-red-300 border-red-400/30"
-                    >
-                      {item.visible ? "Nascondi" : "Mostra"}
-                    </button>
+                    <div className="flex items-center gap-2 shrink-0">
+                      <button
+                        onClick={() => navigate(`/menu/${venueId}/form?item_id=${item.id}`)}
+                        className="text-xs font-black px-3 py-1.5 rounded-lg border border-[#A06CD5]/40 bg-[#A06CD5]/10 text-[#A06CD5] hover:bg-[#A06CD5]/20 transition"
+                      >
+                        Modifica
+                      </button>
+                      <button
+                        onClick={() => handleToogleVisible(item)}
+                        className="text-xs font-black px-3 py-1.5 rounded-lg border border-amber-400/30 bg-amber-400/10 text-amber-300 hover:bg-amber-400/20 transition"
+                      >
+                        {item.visible ? "Nascondi" : "Mostra"}
+                      </button>
+                      <button
+                        onClick={() => handleDelete(item)}
+                        className="text-xs font-black px-3 py-1.5 rounded-lg border border-red-400/30 bg-red-400/10 text-red-300 hover:bg-red-400/20 transition"
+                      >
+                        Elimina
+                      </button>
+                    </div>
                   )}
                 </div>
               ))}

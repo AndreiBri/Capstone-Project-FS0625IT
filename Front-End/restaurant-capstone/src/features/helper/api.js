@@ -145,6 +145,41 @@ export const registerUser = async (email, password, role, venueSlug, token, alia
   return res.json();
 };
 
+export const createMenuItem = async (token, itemData) => {
+  const res = await fetch(`${BASE_URL}/api/menu`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(itemData),
+  });
+  if (!res.ok) throw new Error("Creazione item fallita");
+  return res.json();
+};
+
+export const updateMenuItem = async (id, token, itemData) => {
+  const res = await fetch(`${BASE_URL}/api/menu/${id}`, {
+    method: "PUT",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(itemData),
+  });
+  if (!res.ok) throw new Error("Modifica item fallita");
+  return res.json();
+};
+
+export const deleteMenuItem = async (id, token) => {
+  const res = await fetch(`${BASE_URL}/api/menu/${id}`, {
+    method: "DELETE",
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (!res.ok) throw new Error("Eliminazione item fallita");
+  return true;
+};
+
 // ----------- BOOKING ----------------------
 
 export const createBooking = async (customerName, customerEmail, customerPhone, bookingDate, guests, venueId, notes) => {
