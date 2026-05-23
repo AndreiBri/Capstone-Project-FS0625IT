@@ -123,6 +123,14 @@ const FormMenuItem = () => {
             required
           />
 
+          <input
+            type="text"
+            placeholder="Allergeni (es. glutine, lattosio, uova)"
+            value={form.allergens.join(", ")}
+            onChange={(e) => setForm({ ...form, allergens: e.target.value.split(",").map((s) => s.trim()).filter(Boolean) })}
+            className="w-full p-4 rounded-lg bg-[#320842]/60 text-white border border-[#DABFFF]/30 focus:border-[#A06CD5] focus:outline-none"
+          />
+
           <textarea
             placeholder="Descrizione (opzionale)"
             value={form.description}
