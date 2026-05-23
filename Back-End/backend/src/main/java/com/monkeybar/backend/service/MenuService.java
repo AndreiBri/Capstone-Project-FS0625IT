@@ -67,7 +67,8 @@ public class MenuService {
 
         Profile profile = profileService.getEntityByEmail(userEmail);
 
-        if (!item.getVenue().getId().equals(profile.getVenue().getId())) {
+        boolean isOwner = "OWNER".equals(profile.getRole().name());
+        if (!isOwner && !item.getVenue().getId().equals(profile.getVenue().getId())) {
             throw new UnauthorizedException("Non autorizzato a modificare questo locale");
         }
 
