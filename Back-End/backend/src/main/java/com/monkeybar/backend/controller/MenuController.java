@@ -6,6 +6,7 @@ import com.monkeybar.backend.service.MenuService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -35,16 +36,25 @@ public class MenuController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('OWNER', 'SUPERVISOR')")
     public ResponseEntity<MenuItemResponseDTO> create(@Valid @RequestBody MenuItemRequestDTO dto) {
         return ResponseEntity.ok(menuService.create(dto));
     }
 
     @PatchMapping("/{id}/visibility")
+    @PreAuthorize("hasAnyRole('OWNER', 'SUPERVISOR')")
     public ResponseEntity<MenuItemResponseDTO> toggleVisibility(@PathVariable UUID id, Principal principal) {
         return ResponseEntity.ok(menuService.toggleVisibility(id, principal.getName()));
     }
 
+    @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('OWNER', 'SUPERVISOR')")
+    public ResponseEntity<MenuItemResponseDTO> update(@PathVariable UUID id, @Valid @RequestBody MenuItemRequestDTO dto) {
+        return ResponseEntity.ok(menuService.update(id, dto));
+    }
+
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('OWNER', 'SUPERVISOR')")
     public ResponseEntity<Void> delete(@PathVariable UUID id) {
         menuService.delete(id);
         return ResponseEntity.noContent().build();

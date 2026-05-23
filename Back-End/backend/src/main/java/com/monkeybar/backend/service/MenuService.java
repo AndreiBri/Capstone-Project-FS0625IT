@@ -75,6 +75,21 @@ public class MenuService {
         return EntityMapper.toMenuItemResponse(menuItemRepository.save(item));
     }
 
+    public MenuItemResponseDTO update(UUID id, MenuItemRequestDTO dto) {
+        MenuItem item = menuItemRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Prodotto non trovato"));
+
+        item.setName(dto.getName());
+        item.setCategory(dto.getCategory());
+        item.setPrice(dto.getPrice());
+        item.setDescription(dto.getDescription());
+        item.setAllergens(dto.getAllergens());
+        item.setImageUrl(dto.getImageUrl());
+        item.setVisible(true);
+
+        return EntityMapper.toMenuItemResponse(menuItemRepository.save(item));
+    }
+
     public void delete(UUID id) {
         if (!menuItemRepository.existsById(id)) {
             throw new ResourceNotFoundException("Prodotto non trovato");
