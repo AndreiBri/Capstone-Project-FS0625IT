@@ -11,6 +11,8 @@ const Eventi = () => {
   const token = useSelector((state) => state.auth.token);
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
+  // eslint-disable-next-line no-unused-vars
+  const [errorMsg, setErrorMsg] = useState("");
 
   const isAdmin = profile && (profile.role === "OWNER" || profile.role === "SUPERVISOR");
 
@@ -21,8 +23,8 @@ const Eventi = () => {
       try {
         const data = await fetchEvents(venueId);
         setEvents(data);
-      } catch (err) {
-        console.error(err);
+      } catch {
+        setErrorMsg("Impossibile caricare gli eventi, riprova.");
       } finally {
         setLoading(false);
       }
@@ -31,11 +33,12 @@ const Eventi = () => {
   }, [venueId]);
 
   const handleDelete = async (eventId) => {
+    if (!window.confirm(`Eliminare "${event.title}"?`)) return;
     try {
       await deleteEvent(eventId, token);
       setEvents((prev) => prev.filter((i) => i.id !== eventId));
-    } catch (err) {
-      console.error(err);
+    } catch {
+      setErrorMsg("Eliminazione fallita, riprova.");
     }
   };
 
@@ -90,7 +93,13 @@ const Eventi = () => {
                   className="bg-[#320842]/80 backdrop-blur-lg border border-[#DABFFF]/10 rounded-3xl overflow-hidden shadow-xl shadow-[#A06CD5]/10 flex flex-col"
                 >
                   <div onClick={() => navigate(`/events/${venueId}/${event.id}`)} className="cursor-pointer overflow-hidden">
-                    <img src={event.imageUrl} alt={event.title} className="w-full h-52 object-cover hover:scale-105 transition-transform duration-300" />
+                    {event.imageUrl ? (
+                      <img src={event.imageUrl} alt={event.title} className="w-full h-52 object-cover hover:scale-105 transition-transform duration-300" />
+                    ) : (
+                      <div className="w-full h-52 bg-[#320842] flex items-center justify-center">
+                        <span className="text-[#A06CD5] font-black text-5xl">{event.title?.charAt(0).toUpperCase()}</span>
+                      </div>
+                    )}
                   </div>
 
                   <div
