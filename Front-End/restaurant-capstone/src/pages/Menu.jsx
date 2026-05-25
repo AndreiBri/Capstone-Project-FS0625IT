@@ -16,9 +16,11 @@ const Menu = () => {
 
   const isAdmin = profile && (profile.role === "OWNER" || profile.role === "SUPERVISOR");
 
+  // ------ ricava le categorie uniche dal menu e filtra gli item per quella attiva
   const categories = ["all", ...new Set(menuItems.map((i) => i.category || "Altro"))];
   const filtered = activeCategory === "all" ? menuItems : menuItems.filter((i) => (i.category || "Altro") === activeCategory);
 
+  // ------ carica menu completo se admin, pubblico se utente normale
   useEffect(() => {
     const load = async () => {
       if (!venueId) return;

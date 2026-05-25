@@ -36,6 +36,7 @@ const FormEvents = () => {
     if (error) setError("");
   };
 
+  // ------ se siamo in modifica, pre-popola il form con i dati dell'evento esistente
   useEffect(() => {
     if (!isEdit) return;
     fetchEventById(eventId).then((data) => {
@@ -52,6 +53,7 @@ const FormEvents = () => {
     });
   }, [eventId]);
 
+  // ------ OWNER sceglie la venue dal select, SUPERVISOR usa quella assegnata al profilo
   useEffect(() => {
     if (profile.role === "OWNER") {
       fetchAllVenues().then((data) => {
@@ -60,6 +62,7 @@ const FormEvents = () => {
     }
   }, []);
 
+  // ------ upload diretto su Cloudinary, nel form viene salvata solo la URL
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -75,6 +78,7 @@ const FormEvents = () => {
     setUploading(false);
   };
 
+  // ------ combina data e ora in ISO, poi chiama create o update in base a isEdit
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");

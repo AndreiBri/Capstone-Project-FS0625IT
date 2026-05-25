@@ -122,6 +122,7 @@ export default function BookingForm() {
     }
   };
 
+  // ------ se arriva da un evento, pre-compila data e ora automaticamente
   useEffect(() => {
     if (!eventId) return;
 

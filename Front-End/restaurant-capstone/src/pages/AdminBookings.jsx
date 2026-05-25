@@ -35,6 +35,7 @@ function ConfirmDialog({ message, onConfirm, onCancel }) {
   );
 }
 
+// ------ genera e scarica il csv con le prenotazioni attualmente filtrate
 function exportToCSV(bookings) {
   const headers = ["Nome", "Email", "Telefono", "Data", "Ospiti", "Stato"];
   const rows = bookings.map((b) => [
@@ -70,6 +71,7 @@ const AdminBookings = () => {
   const [search, setSearch] = useState("");
   const [dialog, setDialog] = useState(null);
 
+  // ------ carica le venues solo se l'utente è OWNER
   useEffect(() => {
     if (!isOwner) return;
     const load = async () => {
@@ -83,6 +85,7 @@ const AdminBookings = () => {
     load();
   }, []);
 
+  // ------ ricarica le prenotazioni ogni volta che cambia la venue selezionata
   useEffect(() => {
     if (!selectedVenueId) return;
     const load = async () => {
@@ -100,6 +103,7 @@ const AdminBookings = () => {
     load();
   }, [selectedVenueId]);
 
+  // ------ filtra le prenotazioni in base a status, data e testo di ricerca
   const filteredBookings = useMemo(() => {
     return bookings.filter((b) => {
       const matchStatus = filterStatus ? b.status === filterStatus : true;
@@ -118,6 +122,7 @@ const AdminBookings = () => {
     REJECTED: bookings.filter((b) => b.status === "REJECTED").length,
   };
 
+  // ------ chiama l'api giusta in base all'azione e aggiorna la card nella lista
   const handleAction = async (id, action) => {
     let updated;
     if (action === "confirm") updated = await confirmBooking(id, token);

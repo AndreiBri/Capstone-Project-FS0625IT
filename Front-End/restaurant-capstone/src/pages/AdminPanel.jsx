@@ -13,6 +13,7 @@ const ROLE_COLORS = {
   SUPERVISOR: "bg-amber-400/10 text-amber-300 border border-amber-400/30",
 };
 
+// ------ costruisce le card del pannello, vengono poi filtrate in base al ruolo
 const buildFeatures = (venueId) => [
   {
     id: "bookings",
@@ -73,6 +74,7 @@ export default function AdminPanel() {
   const venueId = profile?.venueId;
   const features = buildFeatures(venueId).filter((f) => f.roles.includes(role));
 
+  // ------ serve all'OWNER per il selector venue quando venueId nel profilo è null
   useEffect(() => {
     if (role === "OWNER") {
       fetchAllVenues()

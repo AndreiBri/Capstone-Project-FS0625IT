@@ -31,6 +31,7 @@ const FormMenuItem = () => {
     venueId: venueId || "",
   });
 
+  // ------ carica categorie e allergeni già usati nel menu per suggerimenti nel form
   useEffect(() => {
     if (!venueId || !token) return;
     fetchFullMenu(venueId, token)
@@ -46,6 +47,7 @@ const FormMenuItem = () => {
       .catch(() => {});
   }, [venueId, token]);
 
+  // ------ se siamo in modifica, carica i dati dell'item esistente nel form
   useEffect(() => {
     if (!itemId) return;
 
@@ -68,6 +70,7 @@ const FormMenuItem = () => {
     load();
   }, [itemId]);
 
+  // ------ upload diretto su Cloudinary, nel form viene salvata solo la URL
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
