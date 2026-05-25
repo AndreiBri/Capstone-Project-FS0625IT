@@ -74,7 +74,6 @@ const FormEvents = () => {
     const result = await res.json();
     setForm((prev) => ({ ...prev, imageUrl: result.secure_url }));
     setImagePreview(result.secure_url);
-    setImagePreview(null);
     setUploading(false);
   };
 
