@@ -6,6 +6,7 @@ import com.monkeybar.backend.service.EventService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -30,16 +31,19 @@ public class EventController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('OWNER', 'SUPERVISOR')")
     public ResponseEntity<EventResponseDTO> create(@Valid @RequestBody EventRequestDTO dto) throws IOException {
         return ResponseEntity.ok(eventService.create(dto));
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('OWNER', 'SUPERVISOR')")
     public ResponseEntity<EventResponseDTO> update(@PathVariable UUID id, @Valid @RequestBody EventRequestDTO dto) throws IOException {
         return ResponseEntity.ok(eventService.update(dto, id));
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('OWNER', 'SUPERVISOR')")
     public ResponseEntity<Void> delete(@PathVariable UUID id) {
         eventService.delete(id);
         return ResponseEntity.noContent().build();

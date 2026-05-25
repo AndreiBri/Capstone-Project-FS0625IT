@@ -104,8 +104,9 @@ DELETE /api/menu/{id} ✅ Elimina prodotto
 ## Events ##
 
 Method || URL || Auth || Descrizione
-GET /api/events/{venueId} ❌ Lista eventi
+GET /api/events/{slug} ❌ Lista eventi
 GET /api/events/item/{id} ❌ Singolo evento
+PUT /api/events/{id} ✅ Modifica evento
 POST /api/events ✅ Crea evento
 DELETE /api/events/{id} ✅ Elimina evento
 
@@ -114,6 +115,9 @@ DELETE /api/events/{id} ✅ Elimina evento
 Method || URL || Auth || Descrizione
 GET /api/bookings/{venueId} ✅ Prenotazioni attive
 POST /api/bookings ❌ Crea prenotazione
+PATCH /api/bookings/{id}/confirm ✅ Conferma prenotazione
+PATCH /api/bookings/{id}/reject ✅ Rifiuta prenotazione
+PATCH /api/bookings/{id}/pending ✅ Rimetti in pending
 PATCH /api/bookings/{id}/archive ✅ Archivia prenotazione
 
 ## Ruoli ##
