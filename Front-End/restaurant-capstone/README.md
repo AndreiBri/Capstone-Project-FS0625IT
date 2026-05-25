@@ -1,18 +1,78 @@
-# React + Vite
+# MonkeyBar — Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Frontend del progetto capstone MonkeyBar, un'app per la gestione di venue/bar con menu, eventi e prenotazioni.
 
-Currently, two official plugins are available:
+## Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- React 19
+- Vite
+- Redux Toolkit + redux-persist
+- React Router DOM v7
+- Tailwind CSS v4
+- Framer Motion
+- Headless UI + Heroicons
 
-## React Compiler
+## Requisiti
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+- Node.js >= 18
+- npm
 
-Note: This will impact Vite dev & build performances.
+## Avvio in locale
 
-## Expanding the ESLint configuration
+```bash
+npm install
+npm run dev
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Variabili d'ambiente
+
+Crea un file `.env` nella root del frontend:
+
+```
+VITE_API_URL=la_tua_api_url
+VITE_CLOUDINARY_CLOUD_NAME=il_tuo_cloud_name
+VITE_CLOUDINARY_UPLOAD_PRESET=il_tuo_upload_preset
+```
+
+> Le immagini vengono caricate direttamente su Cloudinary dal frontend — il backend riceve solo la URL.
+
+## Struttura
+
+```
+src/
+├── assets/          # Immagini e CSS statici
+├── components/      # Componenti riutilizzabili (Navbar, Footer, ProtectedRoute...)
+├── features/
+│   ├── auth/        # authSlice — gestione token e profilo utente
+│   ├── helper/      # api.js — tutte le chiamate al backend
+│   └── store/       # configurazione Redux store con redux-persist
+└── pages/           # Una pagina per ogni route
+```
+
+## Pagine principali
+
+| Pagina | Path | Accesso |
+|---|---|---|
+| Home | `/` | Pubblico |
+| Venue | `/venue/:venueId` | Pubblico |
+| Menu | `/menu/:venueId` | Pubblico |
+| Item Detail | `/menu/:venueId/item/:id` | Pubblico |
+| Eventi | `/events/:venueId` | Pubblico |
+| Event Detail | `/events/:venueId/:eventId` | Pubblico |
+| Booking Form | `/booking/form` | Pubblico |
+| Login | `/login` | Pubblico |
+| Admin Panel | `/admin` | OWNER / SUPERVISOR |
+| Admin Bookings | `/admin/bookings` | OWNER / SUPERVISOR |
+| Form Evento | `/events/:venueId/form` | OWNER / SUPERVISOR |
+| Form Menu Item | `/admin/menu/form` | OWNER / SUPERVISOR |
+| Registra Staff | `/admin/register-staff` | OWNER |
+
+## Autenticazione
+
+Il login restituisce un JWT token che viene salvato in Redux (con persist su localStorage).  
+Le route protette usano `ProtectedRoute.jsx` che controlla la presenza del token prima di renderizzare la pagina.
+
+## Ruoli
+
+- **OWNER** — accede a tutto, gestisce tutte le venue
+- **SUPERVISOR** — accede solo alla propria venue
