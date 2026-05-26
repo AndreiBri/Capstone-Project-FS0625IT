@@ -37,8 +37,8 @@ public class MenuController {
 
     @PostMapping
     @PreAuthorize("hasAnyRole('OWNER', 'SUPERVISOR')")
-    public ResponseEntity<MenuItemResponseDTO> create(@Valid @RequestBody MenuItemRequestDTO dto) {
-        return ResponseEntity.ok(menuService.create(dto));
+    public ResponseEntity<MenuItemResponseDTO> create(@Valid @RequestBody MenuItemRequestDTO dto, Principal principal) {
+        return ResponseEntity.ok(menuService.create(dto, principal.getName()));
     }
 
     @PatchMapping("/{id}/visibility")

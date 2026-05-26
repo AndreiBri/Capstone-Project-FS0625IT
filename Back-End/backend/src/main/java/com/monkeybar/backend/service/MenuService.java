@@ -45,8 +45,15 @@ public class MenuService {
         return EntityMapper.toMenuItemResponse(item);
     }
 
-    public MenuItemResponseDTO create(MenuItemRequestDTO dto) {
+    public MenuItemResponseDTO create(MenuItemRequestDTO dto, String userEmail) {
         Venue venue = venueService.getEntityById(dto.getVenueId());
+
+        Profile profile = profileService.getEntityByEmail(userEmail);
+
+        boolean isOwner = "OWNER".equals(profile.getRole().name());
+        if (!isOwner && !profile.getVenue().getId().equals(venue.getId())) {
+            throw new UnauthorizedException("Non autorizzato a modificare questo locale");
+        }
 
         MenuItem item = new MenuItem();
         item.setName(dto.getName());
