@@ -14,7 +14,7 @@ const Eventi = () => {
   // eslint-disable-next-line no-unused-vars
   const [errorMsg, setErrorMsg] = useState("");
 
-  const isAdmin = profile && (profile.role === "OWNER" || profile.role === "SUPERVISOR");
+  const isAdmin = profile && (profile.role === "OWNER" || (profile.role === "SUPERVISOR" && profile.venueSlug === venueId));
 
   useEffect(() => {
     const load = async () => {
