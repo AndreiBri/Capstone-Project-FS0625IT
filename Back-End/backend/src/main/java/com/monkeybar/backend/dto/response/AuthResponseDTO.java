@@ -14,4 +14,5 @@ public class AuthResponseDTO {
     private UUID venueId;
     private String venueName;
     private String alias;
+    private String venueSlug;
 }

@@ -75,6 +75,7 @@ public class AuthService {
         if (profile.getVenue() != null) {
             response.setVenueId(profile.getVenue().getId());
             response.setVenueName(profile.getVenue().getName());
+            response.setVenueSlug(profile.getVenue().getSlug());
         }
         ;
 
