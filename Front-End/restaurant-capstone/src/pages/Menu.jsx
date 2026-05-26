@@ -14,7 +14,7 @@ const Menu = () => {
   const [activeCategory, setActiveCategory] = useState("all");
   const [errorMsg, setErrorMsg] = useState("");
 
-  const isAdmin = profile && (profile.role === "OWNER" || profile.role === "SUPERVISOR");
+  const isAdmin = profile && (profile.role === "OWNER" || (profile.role === "SUPERVISOR" && profile.venueSlug === venueId));
 
   // ------ ricava le categorie uniche dal menu e filtra gli item per quella attiva
   const categories = ["all", ...new Set(menuItems.map((i) => i.category || "Altro"))];
