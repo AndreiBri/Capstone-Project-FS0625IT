@@ -116,7 +116,6 @@ export const updateEvent = async (eventId, token, eventData) => {
     });
     if (!res.ok) throw new Error(`Errore: ${res.status}`);
 
-    console.log("Evento modificato con successo");
     return true;
   } catch (err) {
     console.error(`Fallita modifica:`, err);
