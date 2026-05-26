@@ -22,7 +22,15 @@ const Login = () => {
       const data = await loginUser(email, password);
       dispatch(setToken(data.token));
       dispatch(
-        setProfile({ profileId: data.profileId, email: data.email, role: data.role, venueId: data.venueId, venueName: data.venueName, alias: data.alias }),
+        setProfile({
+          profileId: data.profileId,
+          email: data.email,
+          role: data.role,
+          venueId: data.venueId,
+          venueName: data.venueName,
+          alias: data.alias,
+          venueSlug: data.venueSlug,
+        }),
       );
       navigate("/");
     } catch {

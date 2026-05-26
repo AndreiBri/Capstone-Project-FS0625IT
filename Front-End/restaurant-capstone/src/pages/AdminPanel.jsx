@@ -71,10 +71,10 @@ export default function AdminPanel() {
   const navigate = useNavigate();
 
   const role = profile?.role ?? "SUPERVISOR";
-  const venueId = profile?.venueId;
-  const features = buildFeatures(venueId).filter((f) => f.roles.includes(role));
+  const venueSlug = profile?.venueSlug ?? null;
+  const features = buildFeatures(venueSlug).filter((f) => f.roles.includes(role));
 
-  // ------ serve all'OWNER per il selector venue quando venueId nel profilo è null
+  // ------ serve all'OWNER per il selector venue quando venueSlug nel profilo è null
   useEffect(() => {
     if (role === "OWNER") {
       fetchAllVenues()
