@@ -2,6 +2,10 @@
 
 Frontend del progetto capstone MonkeyBar, un'app per la gestione di venue/bar con menu, eventi e prenotazioni.
 
+## 🌐 Live Demo
+
+**[monkeyfamilywebsite.netlify.app](https://monkeyfamilywebsite.netlify.app)**
+
 ## Stack
 
 - React 19

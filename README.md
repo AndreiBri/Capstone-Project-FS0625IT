@@ -2,6 +2,10 @@
 
 Progetto capstone full-stack — app per la gestione di venue/bar con menu, eventi e prenotazioni.
 
+## 🌐 Live Demo
+
+**[monkeyfamilywebsite.netlify.app](https://monkeyfamilywebsite.netlify.app)**
+
 ## Struttura del progetto
 
 ```
