@@ -194,6 +194,7 @@ function Sedi() {
 
 // --- Mappe ---
 function Mappe() {
+  const [mapsAllowed, setMapsAllowed] = useState(false);
   const venues = [
     {
       name: "Monkey Cocktail Lab",
@@ -206,6 +207,21 @@ function Mappe() {
       src: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2846.9777316959294!2d11.371483276564769!3d44.47462919891722!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x477e2b9fe478173b%3A0x5a1ae2a12b18c551!2sMonkey%20Factory!5e0!3m2!1sit!2sit!4v1772896543545!5m2!1sit!2sit",
     },
   ];
+
+  useEffect(() => {
+    const handler = () => {
+      const saved = localStorage.getItem("monkey_cookie_consent");
+
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        setMapsAllowed(parsed.marketing === true);
+      }
+    };
+
+    window.addEventListener("cookieConsentUpdated", handler);
+    handler();
+    return () => window.removeEventListener("cookieConsentUpdated", handler);
+  }, []);
 
   return (
     <section className="py-24 px-4 bg-[#320842]/30">
@@ -220,17 +236,23 @@ function Mappe() {
               <h3 className="text-lg font-black text-[#DABFFF]">{venue.name}</h3>
               <p className="text-[#DABFFF]/40 text-xs">📍 {venue.address}</p>
               <div className="w-full aspect-video rounded-3xl overflow-hidden border border-[#A06CD5]/20 shadow-lg shadow-[#A06CD5]/10">
-                <iframe
-                  title={venue.name}
-                  src={venue.src}
-                  width="100%"
-                  height="100%"
-                  style={{ border: 0 }}
-                  allowFullScreen
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  className="w-full h-full"
-                />
+                {mapsAllowed ? (
+                  <iframe
+                    title={venue.name}
+                    src={venue.src}
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    className="w-full h-full"
+                  />
+                ) : (
+                  <div className="w-full h-full flex flex-col items-center justify-center gap-3 bg-[#1a0526]">
+                    <p className="text-[#DABFFF]/60 text-sm">Accetta i cookie per vedere la mappa</p>
+                  </div>
+                )}
               </div>
             </div>
           ))}

@@ -85,7 +85,18 @@ const Footer = () => {
 
         <hr className="my-8 border-[#A06CD5]/30" />
 
-        <p className="text-center text-[#DABFFF]/70 text-sm">© {currentYear} Monkey Family. Tutti i diritti riservati.</p>
+        <p className="text-center text-[#DABFFF]/70 text-sm">
+          © {currentYear} Monkey Family. Tutti i diritti riservati.
+          <button
+            onClick={() => {
+              localStorage.removeItem("monkey_cookie_consent");
+              window.location.reload();
+            }}
+            className="text-[#DABFFF]/40 hover:text-[#DABFFF] text-xs transition-colors mx-2"
+          >
+            Gestisci cookie
+          </button>
+        </p>
       </div>
     </footer>
   );

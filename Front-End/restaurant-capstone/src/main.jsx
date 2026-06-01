@@ -23,6 +23,7 @@ import AdminBookings from "./pages/AdminBookings.jsx";
 import RegisterStaff from "./pages/RegisterStaff.jsx";
 import FormMenuItem from "./pages/FormMenuItem.jsx";
 import ItemDetail from "./pages/ItemDetail.jsx";
+import CookiePolicy from "./pages/CookiePolicy.jsx";
 
 const router = createBrowserRouter([
   {
@@ -37,6 +38,7 @@ const router = createBrowserRouter([
       { path: "menu/:venueId/:itemId", element: <ItemDetail /> },
       { path: "booking/form", element: <BookingForm /> },
       { path: "login", element: <Login /> },
+      { path: "cookie", element: <CookiePolicy /> },
       {
         path: "admin",
         element: (
