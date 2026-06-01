@@ -37,7 +37,7 @@ const Menu = () => {
     load();
   }, [venueId, isAdmin, token]);
 
-  const handleToogleVisible = async (item) => {
+  const handleToggleVisible = async (item) => {
     try {
       const update = await toogleMenuItemsVisibility(item.id, token);
       setMenuItems((prev) => prev.map((i) => (i.id === item.id ? update : i)));
@@ -164,7 +164,7 @@ const Menu = () => {
                         Modifica
                       </button>
                       <button
-                        onClick={() => handleToogleVisible(item)}
+                        onClick={() => handleToggleVisible(item)}
                         className="text-xs font-black px-3 py-1.5 rounded-lg border border-amber-400/30 bg-amber-400/10 text-amber-300 hover:bg-amber-400/20 transition"
                       >
                         {item.visible ? "Nascondi" : "Mostra"}
