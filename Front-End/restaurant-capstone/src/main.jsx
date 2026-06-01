@@ -24,6 +24,8 @@ import RegisterStaff from "./pages/RegisterStaff.jsx";
 import FormMenuItem from "./pages/FormMenuItem.jsx";
 import ItemDetail from "./pages/ItemDetail.jsx";
 import CookiePolicy from "./pages/CookiePolicy.jsx";
+import PrivacyPolicy from "./pages/PrivacyPolicy.jsx";
+import TermsOfService from "./pages/TermsOfService.jsx";
 
 const router = createBrowserRouter([
   {
@@ -39,6 +41,8 @@ const router = createBrowserRouter([
       { path: "booking/form", element: <BookingForm /> },
       { path: "login", element: <Login /> },
       { path: "cookie", element: <CookiePolicy /> },
+      { path: "privacy", element: <PrivacyPolicy /> },
+      { path: "termini", element: <TermsOfService /> },
       {
         path: "admin",
         element: (
