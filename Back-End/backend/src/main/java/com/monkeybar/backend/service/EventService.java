@@ -24,6 +24,7 @@ public class EventService {
 
     private final EventRepository eventRepository;
     private final VenueService venueService;
+    private final NewsletterService newsletterService;
     private final ProfileService profileService;
 
     public List<EventResponseDTO> getByVenueId(UUID venueId) {
@@ -59,7 +60,9 @@ public class EventService {
         event.setVenue(venue);
         event.setImageUrl(dto.getImageUrl());
 
-        return EntityMapper.toEventResponse(eventRepository.save(event));
+        Event saved = eventRepository.save(event);
+        newsletterService.sendNewsletterForEvent(saved);
+        return EntityMapper.toEventResponse(saved);
     }
 
     public EventResponseDTO update(EventRequestDTO dto, UUID eventId) throws IOException {
