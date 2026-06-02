@@ -1,20 +1,26 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
+import { subscribeNewsletter } from "../features/helper/api";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState(null);
 
-  const handleSubscribe = () => {
+  const handleSubscribe = async () => {
     if (!email || !email.includes("@")) {
       setStatus("error");
       return;
     }
-    // TODO: collegare a backend locale quando pronto
-    setStatus("success");
-    setEmail("");
-    setTimeout(() => setStatus(null), 4000);
+
+    try {
+      await subscribeNewsletter(email);
+      setStatus("success");
+      setEmail("");
+      setTimeout(() => setStatus(null), 400);
+    } catch {
+      setStatus("error");
+    }
   };
 
   return (
@@ -39,7 +45,7 @@ const Footer = () => {
                 className="flex-1 px-5 py-3 text-white bg-[#320842]/50 border border-[#A06CD5]/30 rounded-xl focus:border-[#A06CD5] focus:outline-none focus:ring-2 focus:ring-[#A06CD5]/40 placeholder:text-[#DABFFF]/60"
               />
               <button
-                onClick={handleSubscribe}
+                onClick={handleSubscribe()}
                 className="px-8 py-3 text-base font-medium text-white bg-[#A06CD5] rounded-xl hover:bg-[#8a5bc0] transition-all duration-300 hover:shadow-xl hover:shadow-[#A06CD5]/40 whitespace-nowrap"
               >
                 Iscriviti
@@ -101,5 +107,4 @@ const Footer = () => {
     </footer>
   );
 };
-
 export default Footer;

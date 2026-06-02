@@ -242,3 +242,16 @@ export const archiveBooking = async (id, token) => {
     console.error("Errore archiviazione prenotazione:", err);
   }
 };
+
+// ----------- NEWSLETTER ----------------------
+
+export const subscribeNewsletter = async (email) => {
+  const res = await fetch(`${BASE_URL}/api/newsletter/subscribe`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email }),
+  });
+  if (!res.ok) throw new Error("Iscrizione fallita");
+};
