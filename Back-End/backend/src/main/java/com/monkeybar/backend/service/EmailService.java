@@ -17,6 +17,7 @@ public class EmailService {
 
     private static final DateTimeFormatter DATE_FMT =
             DateTimeFormatter.ofPattern("d MMMM yyyy", Locale.ITALIAN);
+    private static final DateTimeFormatter TIME_FMT = DateTimeFormatter.ofPattern("HH:mm");
     private final RestClient restClient;
     private final String from;
 
@@ -190,6 +191,8 @@ public class EmailService {
         String venue = event.getVenue().getName();
         String date = event.getStartTime().format(DATE_FMT);
         String description = event.getDescription() != null ? event.getDescription() : "";
+        String startTime = event.getStartTime().format(TIME_FMT);
+        String endTime = event.getEndTime() != null ? event.getEndTime().format(TIME_FMT) : "";
 
         return """
                 <!DOCTYPE html>
@@ -224,6 +227,8 @@ public class EmailService {
                         <table>
                           <tr><td>Venue</td><td><strong>%s</strong></td></tr>
                           <tr><td>Data</td><td><strong>%s</strong></td></tr>
+                          <tr><td>Inizio</td><td><strong>%s</strong></td></tr>
+                          <tr><td>Fine</td><td><strong>%s</strong></td></tr>
                         </table>
                       </div>
                       <p>A presto,<br><strong style="color:#DABFFF">Il team di Monkey Family</strong></p>
@@ -232,6 +237,6 @@ public class EmailService {
                   </div>
                 </body>
                 </html>
-                """.formatted(title, description, venue, date, Year.now().getValue());
+                """.formatted(title, description, venue, date, startTime, endTime, Year.now().getValue());
     }
 }
