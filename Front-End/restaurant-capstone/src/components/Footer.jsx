@@ -45,7 +45,7 @@ const Footer = () => {
                 className="flex-1 px-5 py-3 text-white bg-[#320842]/50 border border-[#A06CD5]/30 rounded-xl focus:border-[#A06CD5] focus:outline-none focus:ring-2 focus:ring-[#A06CD5]/40 placeholder:text-[#DABFFF]/60"
               />
               <button
-                onClick={handleSubscribe()}
+                onClick={handleSubscribe}
                 className="px-8 py-3 text-base font-medium text-white bg-[#A06CD5] rounded-xl hover:bg-[#8a5bc0] transition-all duration-300 hover:shadow-xl hover:shadow-[#A06CD5]/40 whitespace-nowrap"
               >
                 Iscriviti

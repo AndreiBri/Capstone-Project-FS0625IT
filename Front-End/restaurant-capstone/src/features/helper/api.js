@@ -255,3 +255,43 @@ export const subscribeNewsletter = async (email) => {
   });
   if (!res.ok) throw new Error("Iscrizione fallita");
 };
+
+export const fetchSubscribers = async (token) => {
+  try {
+    const res = await fetch(`${BASE_URL}/api/newsletter/subscribers`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!res.ok) throw new Error(`Errore: ${res.status}`);
+    return res.json();
+  } catch {
+    console.error("Errore fetch lista subscribers");
+  }
+};
+
+export const deleteSubscriber = async (token, id) => {
+  try {
+    const res = await fetch(`${BASE_URL}/api/newsletter/subscribers/${id}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!res.ok) throw new Error(`Errore: ${res.status}`);
+    return true;
+  } catch (err) {
+    console.error("Errore eliminazione subscriber:", err);
+    return false;
+  }
+};
+
+export const deleteAllSubscribers = async (token) => {
+  try {
+    const res = await fetch(`${BASE_URL}/api/newsletter/subscribers`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!res.ok) throw new Error(`Errore: ${res.status}`);
+    return true;
+  } catch (err) {
+    console.error("Errore eliminazione tutti i subscribers:", err);
+    return false;
+  }
+};

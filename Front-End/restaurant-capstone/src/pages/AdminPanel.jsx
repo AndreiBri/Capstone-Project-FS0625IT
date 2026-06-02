@@ -59,6 +59,17 @@ const buildFeatures = (venueId) => [
     border: "border-emerald-400/30",
     accent: "text-emerald-300",
   },
+  {
+    id: "newsletter",
+    title: "Newsletter",
+    description: "Gestisci gli iscritti alla newsletter",
+    icon: "📧",
+    path: "/admin/newsletter",
+    roles: ["OWNER"],
+    color: "from-blue-400/20 to-blue-400/5",
+    border: "border-blue-400/30",
+    accent: "text-blue-300",
+  },
 ];
 
 export default function AdminPanel() {

@@ -26,6 +26,7 @@ import ItemDetail from "./pages/ItemDetail.jsx";
 import CookiePolicy from "./pages/CookiePolicy.jsx";
 import PrivacyPolicy from "./pages/PrivacyPolicy.jsx";
 import TermsOfService from "./pages/TermsOfService.jsx";
+import AdminSubscribers from "./pages/AdminSubscribers.jsx";
 
 const router = createBrowserRouter([
   {
@@ -80,6 +81,14 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute allowedRoles={["OWNER"]}>
             <RegisterStaff />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "admin/newsletter",
+        element: (
+          <ProtectedRoute allowedRoles={["OWNER"]}>
+            <AdminSubscribers />
           </ProtectedRoute>
         ),
       },
