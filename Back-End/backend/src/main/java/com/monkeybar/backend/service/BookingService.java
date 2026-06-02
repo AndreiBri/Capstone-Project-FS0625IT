@@ -22,6 +22,7 @@ public class BookingService {
 
     private final BookingRepository bookingRepository;
     private final VenueService venueService;
+    private final EmailService emailService;
 
     public List<BookingResponseDTO> getActiveByVenueId(UUID venueId) {
         return bookingRepository.findByVenueIdAndArchivedFalse(venueId)
@@ -53,7 +54,9 @@ public class BookingService {
         booking.setNotes(dto.getNotes());
         booking.setVenue(venue);
 
-        return EntityMapper.toBookingResponse(bookingRepository.save(booking));
+        Booking saved = bookingRepository.save(booking);
+        emailService.sendBookingConfirmationEmail(saved);
+        return EntityMapper.toBookingResponse(saved);
     }
 
     public BookingResponseDTO archive(UUID id) {
@@ -67,14 +70,20 @@ public class BookingService {
         Booking booking = bookingRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Prenotazione non trovata"));
         booking.setStatus(BookingStatus.CONFIRMED);
-        return EntityMapper.toBookingResponse(bookingRepository.save(booking));
+        booking.setStatus(BookingStatus.CONFIRMED);
+        Booking saved = bookingRepository.save(booking);
+        emailService.sendBookingConfirmed(saved);
+        return EntityMapper.toBookingResponse(saved);
     }
 
     public BookingResponseDTO reject(UUID id) {
         Booking booking = bookingRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Prenotazione non trovata"));
         booking.setStatus(BookingStatus.REJECTED);
-        return EntityMapper.toBookingResponse(bookingRepository.save(booking));
+        booking.setStatus(BookingStatus.REJECTED);
+        Booking saved = bookingRepository.save(booking);
+        emailService.sendBookingRejected(saved);
+        return EntityMapper.toBookingResponse(saved);
     }
 
     public BookingResponseDTO pending(UUID id) {
