@@ -16,7 +16,7 @@ Capstone-Project-FS0625IT/
 
 ## Stack
 
-**Backend** — Java 25, Spring Boot, Spring Security + JWT, PostgreSQL, Cloudinary  
+**Backend** — Java 25, Spring Boot, Spring Security + JWT, PostgreSQL, Cloudinary, Resend  
 **Frontend** — React 19, Vite, Redux Toolkit, Tailwind CSS, React Router DOM v7
 
 ## Avvio in locale
@@ -55,6 +55,11 @@ Richiede il file `.env` configurato (vedi README frontend).
 - Gestione prenotazioni (conferma, rifiuta, archivia)
 - Registrazione SUPERVISOR da parte dell'OWNER
 - Upload immagini via Cloudinary
+- Email transazionali via Resend (conferma prenotazione, conferma/rifiuto, newsletter)
+- Newsletter con iscrizione pubblica dal footer e notifica automatica ai subscriber alla creazione di un nuovo evento
+- Gestione iscritti newsletter (lista, ricerca, rimozione singola/totale, export CSV)
+- Banner cookie con consenso granulare (necessari / analitici / marketing)
+- Pagine statiche: Cookie Policy, Privacy Policy, Termini di Servizio
 
 ## Ruoli
 
