@@ -38,7 +38,7 @@ public class NewsletterController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping
+    @PostMapping("/subscribers")
     public ResponseEntity<String> subscribe(@RequestBody Map<String, String> body) {
         newsletterService.subscribe(body.get("email"));
         return ResponseEntity.ok("Iscrizione avvenuta con successo");
