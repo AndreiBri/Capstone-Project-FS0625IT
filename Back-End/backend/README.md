@@ -44,6 +44,7 @@ CLOUDINARY_API_SECRET=il_tuo_api_secret
 JWT_SECRET=il_tuo_secret
 
 RESEND_API_KEY=la_tua_api_key
+RESEND_FROM_EMAIL=il_tuo_indirizzo_mittente
 
 ALLOWED_ORIGINS=il_tuo_origin
 ```
@@ -121,6 +122,15 @@ src/main/java/com/monkeybar/backend/
 | PATCH | `/api/bookings/{id}/pending` | ✅ | Rimetti in pending |
 | PATCH | `/api/bookings/{id}/archive` | ✅ | Archivia prenotazione |
 
+### Newsletter
+
+| Method | URL | Auth | Descrizione |
+|---|---|---|---|
+| POST | `/api/newsletter/subscribe` | ❌ | Iscrizione alla newsletter |
+| GET | `/api/newsletter/subscribers` | OWNER | Lista tutti gli iscritti |
+| DELETE | `/api/newsletter/subscribers/{id}` | OWNER | Rimuovi iscritto specifico |
+| DELETE | `/api/newsletter/subscribers` | OWNER | Rimuovi tutti gli iscritti |
+
 ## Ruoli
 
 | Ruolo | Come viene creato | Accesso |
@@ -134,6 +144,17 @@ src/main/java/com/monkeybar/backend/
 - BCrypt — password hashate con rounds = 12
 - CORS — origini configurate via `env.properties`
 - Error handling — gestito globalmente da `GlobalExceptionHandler`
+
+## Email (Resend)
+
+Le email transazionali vengono inviate tramite [Resend](https://resend.com) via chiamata REST diretta con `RestClient`.
+
+| Evento | Destinatario | Descrizione |
+|---|---|---|
+| Nuova prenotazione | Cliente | Conferma ricezione richiesta |
+| Prenotazione confermata | Cliente | Notifica conferma |
+| Prenotazione rifiutata | Cliente | Notifica rifiuto |
+| Nuovo evento creato | Iscritti newsletter | Notifica nuovo evento con dettagli |
 
 ## Immagini
 
