@@ -70,11 +70,33 @@ src/
 | Form Evento | `/events/:venueId/form` | OWNER / SUPERVISOR |
 | Form Menu Item | `/admin/menu/form` | OWNER / SUPERVISOR |
 | Registra Staff | `/admin/register-staff` | OWNER |
+| Newsletter Iscritti | `/admin/newsletter` | OWNER |
+| Cookie Policy | `/cookie` | Pubblico |
+| Privacy Policy | `/privacy` | Pubblico |
+| Termini di Servizio | `/termini` | Pubblico |
 
 ## Autenticazione
 
 Il login restituisce un JWT token che viene salvato in Redux (con persist su localStorage).  
 Le route protette usano `ProtectedRoute.jsx` che controlla la presenza del token prima di renderizzare la pagina.
+
+## Newsletter
+
+Il Footer contiene un form di iscrizione alla newsletter. Quando un utente si iscrive, l'email viene salvata nel DB tramite `POST /api/newsletter/subscribe`.
+
+Quando l'OWNER crea un nuovo evento, tutti gli iscritti ricevono automaticamente un'email di notifica via Resend.
+
+L'OWNER può gestire gli iscritti dalla pagina `/admin/newsletter`:
+- Lista iscritti con ricerca per email
+- Rimozione singola con dialog di conferma
+- Rimozione di tutti gli iscritti (in caso di data breach)
+- Export CSV per conformità GDPR
+
+## Cookie & Privacy
+
+Il sito include un banner cookie con consenso granulare (necessari / analitici / marketing).  
+Le Google Maps sono bloccate fino al consenso marketing.  
+Sono presenti pagine statiche: Cookie Policy, Privacy Policy, Termini di Servizio.
 
 ## Ruoli
 
