@@ -16,7 +16,7 @@ Capstone-Project-FS0625IT/
 
 ## Stack
 
-**Backend** — Java 25, Spring Boot, Spring Security + JWT, PostgreSQL, Cloudinary, Resend  
+**Backend** — Java 25, Spring Boot, Spring Security + JWT, PostgreSQL, Supabase, Netlify, Resend  
 **Frontend** — React 19, Vite, Redux Toolkit, Tailwind CSS, React Router DOM v7
 
 ## Avvio in locale
