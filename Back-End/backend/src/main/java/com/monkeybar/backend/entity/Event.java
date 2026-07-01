@@ -24,6 +24,7 @@ public class Event {
     @Column(nullable = false)
     private String title;
 
+    @Column(columnDefinition = "TEXT")
     private String description;
     private String imageUrl;
     private LocalDateTime startTime;
@@ -32,4 +33,8 @@ public class Event {
     @ManyToOne
     @JoinColumn(name = "venue_id", nullable = false)
     private Venue venue;
+
+    @ManyToOne
+    @JoinColumn(name = "created_by")
+    private Profile createdBy;
 }

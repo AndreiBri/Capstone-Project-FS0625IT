@@ -27,6 +27,8 @@ public class MenuItem {
     private String category;
     private Double price;
     private String imageUrl;
+
+    @Column(columnDefinition = "TEXT")
     private String description;
     private boolean visible = true;
 

@@ -60,6 +60,9 @@ public class EventService {
         event.setVenue(venue);
         event.setImageUrl(dto.getImageUrl());
 
+        String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        event.setCreatedBy(profileService.getEntityByEmail(email));
+
         Event saved = eventRepository.save(event);
         newsletterService.sendNewsletterForEvent(saved);
         return EntityMapper.toEventResponse(saved);
