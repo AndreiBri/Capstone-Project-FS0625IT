@@ -84,7 +84,7 @@ Le route protette usano `ProtectedRoute.jsx` che controlla la presenza del token
 
 Il Footer contiene un form di iscrizione alla newsletter. Quando un utente si iscrive, l'email viene salvata nel DB tramite `POST /api/newsletter/subscribe`.
 
-Quando l'OWNER crea un nuovo evento, tutti gli iscritti ricevono automaticamente un'email di notifica via Resend.
+Quando l'OWNER o SUPERVISOR crea un nuovo evento, tutti gli iscritti ricevono automaticamente un'email di notifica via Resend.
 
 L'OWNER può gestire gli iscritti dalla pagina `/admin/newsletter`:
 - Lista iscritti con ricerca per email
